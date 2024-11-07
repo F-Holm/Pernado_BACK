@@ -5,28 +5,31 @@ import insertUrlParams from 'inserturlparams';
 
 import app from '@src/server';
 
-import UserRepo from '@src/repos/UserRepo';
-import User, { IUser } from '@src/models/User';
+import UsuarioRepo from '@src/repos/UsuarioRepo';
+import Usuario, { IUsuario } from '@src/models/Usuario';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
+import { USER_NOT_FOUND_ERR } from '@src/services/UsuarioService';
 
 import Paths from 'spec/support/Paths';
 import apiCb from 'spec/support/apiCb';
 import { TApiCb } from 'spec/types/misc';
+import Direccion from '@src/models/Direccion';
+import { get } from 'http';
 
 
 // Dummy users for GET req
 const getDummyUsers = () => {
+  
   return [
-    User.new('Sean Maxwell', 'sean.maxwell@gmail.com'),
-    User.new('John Smith', 'john.smith@gmail.com'),
-    User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
+    Usuario.new(1,'sean.maxwell@gmail.com','43245344','Sean','Maxwell','Sean Maxwell','dasds',new Date(),Direccion.new('Main St',2343,0,'CASA','Buenos Aires','C.A.B.A',14192) ),
+    Usuario.new(2,'dassean.maxwell@gmail.com','43245324','Seasdan','Madsaxwell','Seandas Maxwell','dasdds',new Date(),Direccion.new('Main St',2344,3,'DPARTAMENTO','Buenos Aires','C.A.B.A',3123) ),
+    Usuario.new(3,'sesaan.maxwell@gmail.com','4323344','Seaan','Masxwell','Sean Maxl','sds',new Date(),Direccion.new('Main St',2323,0,'CASA','Buenos Aires','C.A.B.A',2192) ),
   ];
 };
 
 
 // Tests
-describe('UserRouter', () => {
+describe('UsuarioRouter', () => {
 
   let agent: TestAgent<Test>;
 
@@ -37,12 +40,12 @@ describe('UserRouter', () => {
   });
 
   // Get all users
-  describe(`"GET:${Paths.Users.Get}"`, () => {
+  describe(`"GET:${Paths.Usuario.Get}"`, () => {
 
     // Setup API
     const api = (cb: TApiCb) => 
       agent
-        .get(Paths.Users.Get)
+        .get(Paths.Usuario.Get)
         .end(apiCb(cb));
 
     // Success
@@ -50,36 +53,53 @@ describe('UserRouter', () => {
     `of "${HttpStatusCodes.OK}" if the request was successful.`, (done) => {
       // Add spy
       const data = getDummyUsers();
-      spyOn(UserRepo, 'getAll').and.resolveTo(data);
+      spyOn(UsuarioRepo, 'getAll').and.resolveTo(data);
       // Call API
       api(res => {
+       // console.log(res.body);
+      //console.log(data);
+      let a: IUsuario[] = res.body.usuarios as IUsuario[];
+      var date = new Date(a[0].fechaNacimiento);
+
+      // Crear un objeto DateTimeFormat con opciones específicas para Argentina
+      var dateFormat = new Intl.DateTimeFormat("es-AR", {
+      timeZone: "America/Argentina/Buenos_Aires",
+      timeZoneName: "short"
+    });
+
+        // Formatear la fecha
+        const formatted = dateFormat.format(date);
+
         expect(res.status).toBe(HttpStatusCodes.OK);
-        expect(res.body).toEqual({ users: data });
+        console.log(a[0]);
+        expect(res.body).toEqual({ usuarios: data });
         done();
       });
     });
   });
 
   // Test add user
-  describe(`"POST:${Paths.Users.Add}"`, () => {
+  describe(`"POST:${Paths.Usuario.Add}"`, () => {
 
-    const ERROR_MSG = `${ValidatorErr}"user".`,
+    const ERROR_MSG = `${ValidatorErr}"Usuario".`,
       DUMMY_USER = getDummyUsers()[0];
 
     // Setup API
-    const callApi = (user: IUser | null, cb: TApiCb) => 
+    
+    const callApi = (user: IUsuario | null, cb: TApiCb) => 
       agent
-        .post(Paths.Users.Add)
-        .send({ user })
+        .post(Paths.Usuario.Add)
+        .send( {usuario:user!} )
         .end(apiCb(cb));
 
     // Test add user success
     it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` + 
     'request was successful.', (done) => {
       // Spy
-      spyOn(UserRepo, 'add').and.resolveTo();
+      spyOn(UsuarioRepo, 'add').and.resolveTo();
       // Call api
       callApi(DUMMY_USER, res => {
+        
         expect(res.status).toBe(HttpStatusCodes.CREATED);
         done();
       });
@@ -99,15 +119,15 @@ describe('UserRouter', () => {
   });
 
   // Update users
-  describe(`"PUT:${Paths.Users.Update}"`, () => {
+  describe(`"PUT:${Paths.Usuario.Update}"`, () => {
 
     const ERROR_MSG = `${ValidatorErr}"user".`,
       DUMMY_USER = getDummyUsers()[0];
 
     // Setup API
-    const callApi = (user: IUser | null, cb: TApiCb) => 
+    const callApi = (user: IUsuario | null, cb: TApiCb) => 
       agent
-        .put(Paths.Users.Update)
+        .put(Paths.Usuario.Update)
         .send({ user })
         .end(apiCb(cb));
 
@@ -115,8 +135,8 @@ describe('UserRouter', () => {
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
     'request was successful.', (done) => {
       // Setup spies
-      spyOn(UserRepo, 'update').and.resolveTo();
-      spyOn(UserRepo, 'persists').and.resolveTo(true);
+      spyOn(UsuarioRepo, 'update').and.resolveTo();
+      spyOn(UsuarioRepo, 'persists').and.resolveTo(true);
       // Call api
       callApi(DUMMY_USER, res => {
         expect(res.status).toBe(HttpStatusCodes.OK);
@@ -150,20 +170,20 @@ describe('UserRouter', () => {
   });
 
   // Delete User
-  describe(`"DELETE:${Paths.Users.Delete}"`, () => {
+  describe(`"DELETE:${Paths.Usuario.Delete}"`, () => {
 
     // Call API
     const callApi = (id: number, cb: TApiCb) => 
       agent
-        .delete(insertUrlParams(Paths.Users.Delete, { id }))
+        .delete(insertUrlParams(Paths.Usuario.Delete, { id }))
         .end(apiCb(cb));
 
     // Success
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
     'request was successful.', (done) => {
       // Setup spies
-      spyOn(UserRepo, 'delete').and.resolveTo();
-      spyOn(UserRepo, 'persists').and.resolveTo(true);
+      spyOn(UsuarioRepo, 'delete').and.resolveTo();
+      spyOn(UsuarioRepo, 'persists').and.resolveTo(true);
       // Call api
       callApi(5, res => {
         expect(res.status).toBe(HttpStatusCodes.OK);

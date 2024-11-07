@@ -31,7 +31,7 @@ export interface IUsuario {
  */
 function new_(
   dni?: number,
-  mail?: string,
+  mail?: string,  
   telefono?: string,
   nombre?: string,
   apellido?: string,

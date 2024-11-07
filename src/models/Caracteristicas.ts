@@ -23,6 +23,7 @@ export interface ICaracteristicas {
   patio: boolean;
   gimnasio: boolean;
   seguridad: boolean;
+  mascotas: boolean;
 }
 
 
@@ -48,6 +49,7 @@ function new_(
   patio?: boolean,
   gimnasio?: boolean,
   seguridad?: boolean,
+  mascotas?: boolean,
 ): ICaracteristicas {
   return {
     cantidadAmbientes: (cantidadAmbientes ?? 0),
@@ -66,6 +68,7 @@ function new_(
     patio: (patio ?? false),
     gimnasio: (gimnasio ?? false),
     seguridad: (seguridad ?? false),
+    mascotas: (mascotas ?? true),
   };
 }
 
@@ -77,7 +80,7 @@ function from(param: object): ICaracteristicas {
     throw new Error(INVALID_CONSTRUCTOR_PARAM);
   }
   const p = param as ICaracteristicas;
-  return new_(p.cantidadAmbientes, p.m2Totales, p.m2Cubiertos, p.cantidadBanios, p.cantidadDormitorios, p.cantidadToilettes, p.anioConstruccionRemodelacion, p.cantidadPlantas, p.cantidadGarages, p.cantidadElevadores, p.parrilla, p.pileta, p.balcon, p.patio, p.gimnasio, p.seguridad);
+  return new_(p.cantidadAmbientes, p.m2Totales, p.m2Cubiertos, p.cantidadBanios, p.cantidadDormitorios, p.cantidadToilettes, p.anioConstruccionRemodelacion, p.cantidadPlantas, p.cantidadGarages, p.cantidadElevadores, p.parrilla, p.pileta, p.balcon, p.patio, p.gimnasio, p.seguridad, p.mascotas);
 }
 
 /**
@@ -102,7 +105,8 @@ function isCaracteristicas(arg: unknown): boolean {
     'balcon' in arg && typeof arg.balcon === 'boolean' &&
     'patio' in arg && typeof arg.patio === 'boolean' &&
     'gimnasio' in arg && typeof arg.gimnasio === 'boolean' &&
-    'seguridad' in arg && typeof arg.seguridad === 'boolean'
+    'seguridad' in arg && typeof arg.seguridad === 'boolean' &&
+    'mascotas' in arg && typeof arg.seguridad === 'boolean'
   );
 }
 
