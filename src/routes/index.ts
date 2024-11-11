@@ -37,21 +37,18 @@ usuarioRouter.get(
 // Add one user
 usuarioRouter.post(
   Paths.Usuario.Add,
-  validate(['usuario', Usuario.isUsuario]),
   UsuarioRoutes.add,
 );
 
 // Update one user
 usuarioRouter.put(
   Paths.Usuario.Update,
-  validate(['usuario', Usuario.isUsuario]),
   UsuarioRoutes.update,
 );
 
 // Delete one user
 usuarioRouter.delete(
   Paths.Usuario.Delete,
-  validate(['id', 'number', 'params']),
   UsuarioRoutes.delete,
 );
 

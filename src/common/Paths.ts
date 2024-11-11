@@ -13,6 +13,10 @@ export default {
     Update: '/',
     Delete: '/:id',
   },
+  Auth: {
+    Base: '/auth',
+    Login: '/',
+  },
   Chat: {
     Base: '/chat',
     Get: '/',

@@ -28,7 +28,7 @@ async function getOne(req: IReq, res: IRes) {
  * Add one user.
  */
 async function add(req: IReq<{usuario: IUsuario}>, res: IRes) {
-  const { usuario } = req.body;
+  const {usuario}  = req.body;
   await UsuarioService.addOne(usuario);
   return res.status(HttpStatusCodes.CREATED).end();
 }
