@@ -1,6 +1,7 @@
 import { IUsuario } from '@src/models/Usuario';
 import { getRandomInt } from '@src/util/misc';
 import { Usuario } from './Conexion';
+import bcrypt from 'bcrypt';
 
 // **** Functions **** //
 
@@ -31,7 +32,9 @@ async function getAll(): Promise<any[]> {
  */
 async function add(usuario: IUsuario): Promise<any> {
   do{
+    const contra = await bcrypt.hash(usuario.contrasenia, 10);
     usuario.id = getRandomInt()
+    usuario.contrasenia = contra;
   } while(await persists(usuario.id));
   return await (new Usuario(usuario)).save();
 }
@@ -40,7 +43,12 @@ async function add(usuario: IUsuario): Promise<any> {
  * Update a user.
  */
 async function update(usuario: IUsuario): Promise<any> {
+  do{
+    const contra = await bcrypt.hash(usuario.contrasenia, 10);
+    usuario.contrasenia = contra;
+  }while(await persists(usuario.id));{
   return await Usuario.findOneAndUpdate({ id: usuario.id }, new Usuario(usuario), { new: true });
+  }
 }
 
 /**

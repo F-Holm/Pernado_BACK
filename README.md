@@ -1,8 +1,5 @@
 # inmobiliaria
-
-- Santiago Esparrach
-- Agustin Gliksman
-- Federico Holm
+Santiago Esparrach, Agustin Gliksman y Federico Holm
 
 ## About
 
