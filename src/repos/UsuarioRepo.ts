@@ -31,10 +31,9 @@ async function getAll(): Promise<any[]> {
  * Add one user.
  */
 async function add(usuario: IUsuario): Promise<any> {
+  usuario.contrasenia = await bcrypt.hash(usuario.contrasenia, 10);
   do{
-    const contra = await bcrypt.hash(usuario.contrasenia, 10);
     usuario.id = getRandomInt()
-    usuario.contrasenia = contra;
   } while(await persists(usuario.id));
   return await (new Usuario(usuario)).save();
 }
