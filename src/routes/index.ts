@@ -100,7 +100,6 @@ propiedadRouter.get(
 // Add one user
 propiedadRouter.post(
   Paths.Propiedad.Add,
-  validate(['propiedad', Propiedad.isPropiedad]),
   PropiedadRoutes.add,
 );
 
