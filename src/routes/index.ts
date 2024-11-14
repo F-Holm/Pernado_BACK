@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import jetValidator from 'jet-validator';
-
 import Paths from '../common/Paths';
 import Usuario from '@src/models/Usuario';
 import Chat from '@src/models/Chat';
@@ -8,6 +7,7 @@ import Propiedad from '@src/models/Propiedad';
 import UsuarioRoutes from './UsuarioRoutes';
 import ChatRoutes from './ChatRoutes';
 import PropiedadRoutes from './PropiedadRoutes';
+import AuthRoutes from './AuthRoutes';
 
 
 // **** Variables **** //
@@ -21,6 +21,13 @@ const apiRouter = Router(),
 const usuarioRouter = Router();
 const chatRouter = Router();
 const propiedadRouter = Router();
+const authRouter = Router();
+
+// Auth
+authRouter.post(
+  Paths.Auth.Login,
+  AuthRoutes.login,
+);
 
 // Get all users
 usuarioRouter.get(
@@ -121,6 +128,7 @@ propiedadRouter.delete(
 apiRouter.use(Paths.Usuario.Base, usuarioRouter);
 apiRouter.use(Paths.Chat.Base, chatRouter);
 apiRouter.use(Paths.Propiedad.Base, propiedadRouter);
+apiRouter.use(Paths.Auth.Base, authRouter);
 
 // **** Export default **** //
 
