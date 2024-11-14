@@ -16,7 +16,7 @@ async function getOne(id: number): Promise<any | null> {
  * Get one user email.
  */
 async function getOneEmail(email: string): Promise<any | null> {
-  return await Usuario.findOne({ mail: email });
+  return await Usuario.findOne({ email: email });
 }
 
 /**
