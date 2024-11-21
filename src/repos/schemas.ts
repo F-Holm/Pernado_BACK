@@ -73,7 +73,7 @@ const compraSchema = new mongoose.Schema({
 const usuarioSchema = new mongoose.Schema({
     id: Number,
     dni: Number,
-    mail: String,
+    email: String,
     telefono: String,
     nombre: String,
     apellido: String,

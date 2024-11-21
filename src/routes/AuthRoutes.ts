@@ -6,7 +6,6 @@ async function login(IReq : IReq<{email: string, contrasenia:string}>, IRes : IR
     const { email, contrasenia } = IReq.body;
     try {
         const token = await AuthService.login(email, contrasenia);
-        console.log({token});
         return IRes.status(HttpStatusCodes.OK).send({ token });
     }
     catch (error) {
