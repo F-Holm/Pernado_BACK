@@ -13,7 +13,7 @@ const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
 export interface IUsuario {
   id: number;
   dni: number;
-  mail: string;
+  email: string;
   telefono: string;
   nombre: string;
   apellido: string;
@@ -31,7 +31,7 @@ export interface IUsuario {
  */
 function new_(
   dni?: number,
-  mail?: string,  
+  email?: string,  
   telefono?: string,
   nombre?: string,
   apellido?: string,
@@ -44,7 +44,7 @@ function new_(
   return {
     id: (id ?? -1),
     dni: (dni ?? 0),
-    mail: (mail ?? ''),
+    email: (email ?? ''),
     telefono: (telefono ?? ''),
     nombre: (nombre ?? ''),
     apellido: (apellido ?? ''),
@@ -63,7 +63,7 @@ function from(param: object): IUsuario {
     throw new Error(INVALID_CONSTRUCTOR_PARAM);
   }
   const p = param as IUsuario;
-  return new_(p.dni, p.mail, p.telefono, p.nombre, p.apellido, p.nombreUsuario, p.contrasenia, p.fechaNacimiento, p.direccion, p.id);
+  return new_(p.dni, p.email, p.telefono, p.nombre, p.apellido, p.nombreUsuario, p.contrasenia, p.fechaNacimiento, p.direccion, p.id);
 }
 
 /**
@@ -75,7 +75,7 @@ function isUsuario(arg: unknown): boolean {
     typeof arg === 'object' &&
     'id' in arg && typeof arg.id === 'number' && 
     'dni' in arg && typeof arg.dni === 'number' &&
-    'mail' in arg && typeof arg.mail === 'string' &&
+    'email' in arg && typeof arg.email === 'string' &&
     'telefono' in arg && typeof arg.telefono === 'string' &&
     'nombre' in arg && typeof arg.nombre === 'string' &&
     'apellido' in arg && typeof arg.apellido === 'string' &&
