@@ -40,7 +40,6 @@ async function getAll(): Promise<IUsuario[]> {
   return (await Usuario.find({}));
 }
 
-
 /**
  * Add one user.
  */

@@ -25,7 +25,6 @@ async function getAll(): Promise<IPropiedad[]> {
   return (await Propiedad.find({}));
 }
 
-
 /**
  * Add one user.
  */
