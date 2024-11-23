@@ -1,9 +1,6 @@
 import { Router } from 'express';
-import jetValidator from 'jet-validator';
+//import jetValidator from 'jet-validator';
 import Paths from '../common/Paths';
-import Usuario from '@src/models/Usuario';
-import Chat from '@src/models/Chat';
-import Propiedad from '@src/models/Propiedad';
 import UsuarioRoutes from './UsuarioRoutes';
 import ChatRoutes from './ChatRoutes';
 import PropiedadRoutes from './PropiedadRoutes';
@@ -12,8 +9,8 @@ import AuthRoutes from './AuthRoutes';
 
 // **** Variables **** //
 
-const apiRouter = Router(),
-  validate = jetValidator();
+const apiRouter = Router();//,
+//  validate = jetValidator();
 
 
 // ** Add UserRouter ** //
@@ -74,21 +71,21 @@ chatRouter.get(
 // Add one user
 chatRouter.post(
   Paths.Chat.Add,
-  validate(['chat', Chat.isChat]),
+  //validate(['chat', Chat.isChat]),
   ChatRoutes.add,
 );
 
 // Update one user
 chatRouter.put(
   Paths.Chat.Update,
-  validate(['chat', Chat.isChat]),
+  //validate(['chat', Chat.isChat]),
   ChatRoutes.update,
 );
 
 // Delete one user
 chatRouter.delete(
   Paths.Chat.Delete,
-  validate(['id', 'number', 'params']),
+  //validate(['id', 'number', 'params']),
   ChatRoutes.delete,
 );
 
@@ -113,14 +110,14 @@ propiedadRouter.post(
 // Update one user
 propiedadRouter.put(
   Paths.Propiedad.Update,
-  validate(['propiedad', Propiedad.isPropiedad]),
+  //validate(['propiedad', Propiedad.isPropiedad]),
   PropiedadRoutes.update,
 );
 
 // Delete one user
 propiedadRouter.delete(
   Paths.Propiedad.Delete,
-  validate(['id', 'number', 'params']),
+  //validate(['id', 'number', 'params']),
   PropiedadRoutes.delete,
 );
 

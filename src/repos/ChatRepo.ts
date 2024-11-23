@@ -8,7 +8,7 @@ import { Chat } from './Conexion';
  * Get one user.
  */
 async function getOne(id: number): Promise<IChat | null> {
-  return await Chat.findOne({ id: id });
+  return (await Chat.findOne({ id: id }));
 }
 
 /**
@@ -22,7 +22,7 @@ async function persists(id: number): Promise<boolean> {
  * Get all users.
  */
 async function getAll(): Promise<IChat[]> {
-  return await Chat.find({});
+  return (await Chat.find({}));
 }
 
 
@@ -31,7 +31,7 @@ async function getAll(): Promise<IChat[]> {
  */
 async function add(chat: IChat): Promise<void> {
   do{
-    chat.id = getRandomInt()
+    chat.id = getRandomInt();
   } while(await persists(chat.id));
   await (new Chat(chat)).save();
 }
