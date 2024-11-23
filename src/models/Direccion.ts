@@ -1,6 +1,6 @@
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
   'with the appropriate user keys.';
 
 
@@ -29,15 +29,15 @@ function new_(
   departamento?: string,
   provincia?: string,
   ciudad?: string,
-  codigoPostal?: number
+  codigoPostal?: number,
 ): IDireccion {
   return {
-    calle: (calle ?? ""),
+    calle: (calle ?? ''),
     numero: (numero ?? 0),
     piso: (piso ?? 0),
-    departamento: (departamento ?? ""),
-    provincia: (provincia ?? ""),
-    ciudad: (ciudad ?? ""),
+    departamento: (departamento ?? ''),
+    provincia: (provincia ?? ''),
+    ciudad: (ciudad ?? ''),
     codigoPostal: (codigoPostal ?? 0),
   };
 }
@@ -60,8 +60,8 @@ function isDireccion(arg: unknown): boolean {
   return (
     !!arg &&
     typeof arg === 'object' &&
-    'calle' in arg && typeof arg.calle === 'string' && 
-    'numero' in arg && typeof arg.numero === 'number' && 
+    'calle' in arg && typeof arg.calle === 'string' &&
+    'numero' in arg && typeof arg.numero === 'number' &&
     'piso' in arg && typeof arg.piso === 'number' &&
     'departamento' in arg && typeof arg.departamento === 'string' &&
     'provincia' in arg && typeof arg.provincia === 'string' &&

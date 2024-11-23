@@ -4,7 +4,7 @@ import Direccion from './Direccion';
 
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
   'with the appropriate user keys.';
 
 
@@ -31,7 +31,7 @@ export interface IUsuario {
  */
 function new_(
   dni?: number,
-  email?: string,  
+  email?: string,
   telefono?: string,
   nombre?: string,
   apellido?: string,
@@ -51,7 +51,7 @@ function new_(
     nombreUsuario: (nombreUsuario ?? ''),
     contrasenia: (contrasenia ?? ''),
     fechaNacimiento: (fechaNacimiento ? new Date(fechaNacimiento) : new Date()),
-    direccion: (direccion ?? Direccion.new())
+    direccion: (direccion ?? Direccion.new()),
   };
 }
 
@@ -73,7 +73,7 @@ function isUsuario(arg: unknown): boolean {
   return (
     !!arg &&
     typeof arg === 'object' &&
-    'id' in arg && typeof arg.id === 'number' && 
+    'id' in arg && typeof arg.id === 'number' &&
     'dni' in arg && typeof arg.dni === 'number' &&
     'email' in arg && typeof arg.email === 'string' &&
     'telefono' in arg && typeof arg.telefono === 'string' &&

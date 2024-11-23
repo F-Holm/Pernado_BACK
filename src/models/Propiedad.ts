@@ -4,7 +4,7 @@ import Caracteristicas, { ICaracteristicas } from './Caracteristicas';
 
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
   'with the appropriate user keys.';
 
 
@@ -39,7 +39,7 @@ function new_(
   expensas?: number,
   imagenes?: [string],
   caracteristicas?: ICaracteristicas,
-  id?: number// id last cause usually set by db
+  id?: number,// id last cause usually set by db
 ): IPropiedad {
   return {
     id: (id ?? -1),
@@ -73,7 +73,7 @@ function isPropiedad(arg: unknown): boolean {
   return (
     !!arg &&
     typeof arg === 'object' &&
-    'id' in arg && typeof arg.id === 'number' && 
+    'id' in arg && typeof arg.id === 'number' &&
     'titulo' in arg && typeof arg.titulo === 'string' &&
     'descripcion' in arg && typeof arg.descripcion === 'string' &&
     'duenio' in arg && typeof arg.duenio === 'object' &&
@@ -83,7 +83,7 @@ function isPropiedad(arg: unknown): boolean {
     'expensas' in arg && typeof arg.expensas === 'number' &&
     'imagenes' in arg && Array.isArray(arg.imagenes) &&
     'caracteristicas' in arg && Caracteristicas.isCaracteristicas(arg.caracteristicas)
-    );
+  );
 }
 
 

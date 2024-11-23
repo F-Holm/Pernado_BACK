@@ -2,7 +2,7 @@ import { IMensaje } from './Mensaje';
 
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
   'with the appropriate user keys.';
 
 
@@ -22,18 +22,18 @@ export interface IChat {
  * Create new User.
  */
 function new_(
-    mensajes?: [IMensaje],
-    vendedor?: number,
-    comprador?: number,
-    id?: number,
-    ): IChat {
-    return {
-        id: (id ?? -1),
-        mensajes: (mensajes ?? [{} as IMensaje]),
-        vendedor: (vendedor ?? 0),
-        comprador: (comprador ?? 0),
-    };
-    };
+  mensajes?: [IMensaje],
+  vendedor?: number,
+  comprador?: number,
+  id?: number,
+): IChat {
+  return {
+    id: (id ?? -1),
+    mensajes: (mensajes ?? [{} as IMensaje]),
+    vendedor: (vendedor ?? 0),
+    comprador: (comprador ?? 0),
+  };
+}
 
 /**
  * Get user instance from object.
@@ -53,10 +53,10 @@ function isChat(arg: unknown): boolean {
   return (
     !!arg &&
     typeof arg === 'object' &&
-    'id' in arg && typeof arg.id === 'number' && 
-    "mensajes" in arg && Array.isArray(arg.mensajes) &&
-    "vendedor" in arg && typeof arg.vendedor === "number" &&
-    "comprador" in arg && typeof arg.comprador === "number"
+    'id' in arg && typeof arg.id === 'number' &&
+    'mensajes' in arg && Array.isArray(arg.mensajes) &&
+    'vendedor' in arg && typeof arg.vendedor === 'number' &&
+    'comprador' in arg && typeof arg.comprador === 'number'
   );
 }
 
