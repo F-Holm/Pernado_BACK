@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
-//import { TipoPropiedad } from '@src/models/TipoPropiedad';
 
 const direccionSchema = new mongoose.Schema({
-  calle: String,
-  numero: Number,
-  piso: Number,
-  departamento: String,
   provincia: String,
-  ciudad: String,
+  municipio: String,
+  direccion: String,
   codigoPostal: Number,
 });
 
@@ -56,7 +52,7 @@ const propiedadSchema = new mongoose.Schema({
   duenio: Number,
   precio: Number,
   alquiler: Boolean,
-  tipoPropiedad: Number,
+  tipoPropiedad: String,
   expensas: Number,
   imagenes: [String],
   preguntas: [preguntaSchema],
@@ -82,13 +78,6 @@ const usuarioSchema = new mongoose.Schema({
   fechaNacimiento: Date,
   direccion: direccionSchema,
 });
-
-/*const tipoPropiedadSchema = new mongoose.Schema({
-    tipo: {
-        type: String,
-        enum: TipoPropiedad,
-    },
-});*/
 
 export default {
   direccionSchema,
