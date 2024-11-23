@@ -7,8 +7,8 @@ import { Propiedad } from './Conexion';
 /**
  * Get one user.
  */
-async function getOne(id: number): Promise<any | null> {
-  return await Propiedad.findOne({ id: id });
+async function getOne(id: number): Promise<IPropiedad | null> {
+  return (await Propiedad.findOne({ id: id }));
 }
 
 /**
@@ -21,33 +21,33 @@ async function persists(id: number): Promise<boolean> {
 /**
  * Get all users.
  */
-async function getAll(): Promise<any[]> {
-  return await Propiedad.find({});
+async function getAll(): Promise<IPropiedad[]> {
+  return (await Propiedad.find({}));
 }
 
 
 /**
  * Add one user.
  */
-async function add(propiedad: IPropiedad): Promise<any> {
+async function add(propiedad: IPropiedad): Promise<void> {
   do{
-    propiedad.id = getRandomInt()
+    propiedad.id = getRandomInt();
   } while(await persists(propiedad.id));
-  return await (new Propiedad(propiedad)).save();
+  await (new Propiedad(propiedad)).save();
 }
 
 /**
  * Update a user.
  */
-async function update(propiedad: IPropiedad): Promise<any> {
-  return await Propiedad.findOneAndUpdate({ id: propiedad.id }, new Propiedad(propiedad), { new: true });
+async function update(propiedad: IPropiedad): Promise<void> {
+  await Propiedad.findOneAndUpdate({ id: propiedad.id }, new Propiedad(propiedad), { new: true });
 }
 
 /**
  * Delete one user.
  */
-async function delete_(id: number): Promise<any> {
-  return await Propiedad.findOneAndDelete({ id: id });
+async function delete_(id: number): Promise<void> {
+  await Propiedad.findOneAndDelete({ id: id });
 }
 
 

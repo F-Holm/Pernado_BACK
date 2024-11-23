@@ -8,7 +8,7 @@ import app from '@src/server';
 import UsuarioRepo from '@src/repos/UsuarioRepo';
 import Usuario, { IUsuario } from '@src/models/Usuario';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { USER_NOT_FOUND_ERR } from '@src/services/UsuarioService';
+import { USUARIO_NOT_FOUND_ERR } from '@src/services/UsuarioService';
 
 import Paths from 'spec/support/Paths';
 import apiCb from 'spec/support/apiCb';
@@ -19,7 +19,7 @@ import { get } from 'http';
 
 // Dummy users for GET req
 const getDummyUsers = () => {
-  
+
   return [
     Usuario.new(1,'sean.maxwell@gmail.com','43245344','Sean','Maxwell','Sean Maxwell','dasds',new Date(),Direccion.new('Main St',2343,0,'CASA','Buenos Aires','C.A.B.A',14192) ),
     Usuario.new(2,'dassean.maxwell@gmail.com','43245324','Seasdan','Madsaxwell','Seandas Maxwell','dasdds',new Date(),Direccion.new('Main St',2344,3,'DPARTAMENTO','Buenos Aires','C.A.B.A',3123) ),
@@ -43,13 +43,13 @@ describe('UsuarioRouter', () => {
   describe(`"GET:${Paths.Usuario.Get}"`, () => {
 
     // Setup API
-    const api = (cb: TApiCb) => 
+    const api = (cb: TApiCb) =>
       agent
         .get(Paths.Usuario.Get)
         .end(apiCb(cb));
 
     // Success
-    it('should return a JSON object with all the users and a status code ' + 
+    it('should return a JSON object with all the users and a status code ' +
     `of "${HttpStatusCodes.OK}" if the request was successful.`, (done) => {
       // Add spy
       const data = getDummyUsers();
@@ -85,29 +85,29 @@ describe('UsuarioRouter', () => {
       DUMMY_USER = getDummyUsers()[0];
 
     // Setup API
-    
-    const callApi = (user: IUsuario | null, cb: TApiCb) => 
+
+    const callApi = (user: IUsuario | null, cb: TApiCb) =>
       agent
         .post(Paths.Usuario.Add)
         .send( {usuario:user!} )
         .end(apiCb(cb));
 
     // Test add user success
-    it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` + 
+    it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` +
     'request was successful.', (done) => {
       // Spy
       spyOn(UsuarioRepo, 'add').and.resolveTo();
       // Call api
       callApi(DUMMY_USER, res => {
-        
+
         expect(res.status).toBe(HttpStatusCodes.CREATED);
         done();
       });
     });
 
     // Missing param
-    it(`should return a JSON object with an error message of "${ERROR_MSG}" ` + 
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` + 
+    it(`should return a JSON object with an error message of "${ERROR_MSG}" ` +
+    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` +
     'param was missing.', (done) => {
       // Call api
       callApi(null, res => {
@@ -125,14 +125,14 @@ describe('UsuarioRouter', () => {
       DUMMY_USER = getDummyUsers()[0];
 
     // Setup API
-    const callApi = (user: IUsuario | null, cb: TApiCb) => 
+    const callApi = (user: IUsuario | null, cb: TApiCb) =>
       agent
         .put(Paths.Usuario.Update)
         .send({ user })
         .end(apiCb(cb));
 
     // Success
-    it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
+    it(`should return a status code of "${HttpStatusCodes.OK}" if the ` +
     'request was successful.', (done) => {
       // Setup spies
       spyOn(UsuarioRepo, 'update').and.resolveTo();
@@ -146,7 +146,7 @@ describe('UsuarioRouter', () => {
 
     // Param missing
     it(`should return a JSON object with an error message of "${ERROR_MSG}" ` +
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` + 
+    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` +
     'param was missing.', (done) => {
       // Call api
       callApi(null, res => {
@@ -157,13 +157,13 @@ describe('UsuarioRouter', () => {
     });
 
     // User not found
-    it('should return a JSON object with the error message of ' + 
-    `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
+    it('should return a JSON object with the error message of ' +
+    `"${USUARIO_NOT_FOUND_ERR}" and a status code of ` +
     `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
       // Call api
       callApi(DUMMY_USER, res => {
         expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-        expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+        expect(res.body.error).toBe(USUARIO_NOT_FOUND_ERR);
         done();
       });
     });
@@ -173,13 +173,13 @@ describe('UsuarioRouter', () => {
   describe(`"DELETE:${Paths.Usuario.Delete}"`, () => {
 
     // Call API
-    const callApi = (id: number, cb: TApiCb) => 
+    const callApi = (id: number, cb: TApiCb) =>
       agent
         .delete(insertUrlParams(Paths.Usuario.Delete, { id }))
         .end(apiCb(cb));
 
     // Success
-    it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
+    it(`should return a status code of "${HttpStatusCodes.OK}" if the ` +
     'request was successful.', (done) => {
       // Setup spies
       spyOn(UsuarioRepo, 'delete').and.resolveTo();
@@ -192,13 +192,13 @@ describe('UsuarioRouter', () => {
     });
 
     // User not found
-    it('should return a JSON object with the error message of ' + 
-    `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
+    it('should return a JSON object with the error message of ' +
+    `"${USUARIO_NOT_FOUND_ERR}" and a status code of ` +
     `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, done => {
       // Setup spies
       callApi(-1, res => {
         expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-        expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+        expect(res.body.error).toBe(USUARIO_NOT_FOUND_ERR);
         done();
       });
     });

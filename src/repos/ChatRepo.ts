@@ -7,7 +7,7 @@ import { Chat } from './Conexion';
 /**
  * Get one user.
  */
-async function getOne(id: number): Promise<any | null> {
+async function getOne(id: number): Promise<IChat | null> {
   return await Chat.findOne({ id: id });
 }
 
@@ -21,7 +21,7 @@ async function persists(id: number): Promise<boolean> {
 /**
  * Get all users.
  */
-async function getAll(): Promise<any[]> {
+async function getAll(): Promise<IChat[]> {
   return await Chat.find({});
 }
 
@@ -29,25 +29,25 @@ async function getAll(): Promise<any[]> {
 /**
  * Add one user.
  */
-async function add(chat: IChat): Promise<any> {
+async function add(chat: IChat): Promise<void> {
   do{
     chat.id = getRandomInt()
   } while(await persists(chat.id));
-  return await (new Chat(chat)).save();
+  await (new Chat(chat)).save();
 }
 
 /**
  * Update a user.
  */
-async function update(chat: IChat): Promise<any> {
-  return await Chat.findOneAndUpdate({ id: chat.id }, new Chat(chat), { new: true });
+async function update(chat: IChat): Promise<void> {
+  await Chat.findOneAndUpdate({ id: chat.id }, new Chat(chat), { new: true });
 }
 
 /**
  * Delete one user.
  */
-async function delete_(id: number): Promise<any> {
-  return await Chat.findOneAndDelete({ id: id });
+async function delete_(id: number): Promise<void> {
+  await Chat.findOneAndDelete({ id: id });
 }
 
 
