@@ -3,6 +3,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import PropiedadRepo from '@src/repos/PropiedadRepo';
 import { IPropiedad } from '@src/models/Propiedad';
+import {IFiltrosPropiedad} from '@src/models/FiltrosPropiedad';
 
 
 // **** Variables **** //
@@ -17,6 +18,27 @@ export const PROPIEDAD_NOT_FOUND_ERR = 'Pripiedad no encontrada';
  */
 async function getAll(): Promise<IPropiedad[]> {
   return await PropiedadRepo.getAll();
+}
+
+/**
+ * Get all users.
+ */
+async function getLimitSkip(limit: number, skip: number): Promise<IPropiedad[]> {
+  return await PropiedadRepo.getLimitSkip(limit, skip);
+}
+
+/**
+ * Get all users.
+ */
+async function getFiltered(filtro: IFiltrosPropiedad): Promise<IPropiedad[]> {
+  return await PropiedadRepo.getFiltered(filtro);
+}
+
+/**
+ * Get all users.
+ */
+async function getFilteredLimitSkip(filtro: IFiltrosPropiedad, limit: number, skip: number): Promise<IPropiedad[]> {
+  return await PropiedadRepo.getFilteredLimitSkip(filtro, limit, skip);
 }
 
 /**
@@ -67,6 +89,9 @@ async function _delete(id: number): Promise<void> {
 export default {
   getAll,
   getOne,
+  getLimitSkip,
+  getFiltered,
+  getFilteredLimitSkip,
   addOne,
   updateOne,
   delete: _delete,

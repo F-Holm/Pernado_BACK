@@ -58,7 +58,7 @@ async function delete_(id: number): Promise<void> {
   await Propiedad.findOneAndDelete({ id: id });
 }
 
-async function getFiltered(filtros: IFiltrosPropiedad) {
+async function getFiltered(filtros: IFiltrosPropiedad): Promise<IPropiedad[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const query: any = {};
 
@@ -98,10 +98,10 @@ async function getFiltered(filtros: IFiltrosPropiedad) {
   if (filtros.seguridad !== undefined) query['caracteristicas.seguridad'] = filtros.seguridad;
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return await Propiedad.find(query).exec();
+  return (await Propiedad.find(query).lean());
 }
 
-async function getFilteredLimitSkip(filtros: IFiltrosPropiedad, limit: number, skip: number) {
+async function getFilteredLimitSkip(filtros: IFiltrosPropiedad, limit: number, skip: number): Promise<IPropiedad[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const query: any = {};
 
@@ -141,7 +141,7 @@ async function getFilteredLimitSkip(filtros: IFiltrosPropiedad, limit: number, s
   if (filtros.seguridad !== undefined) query['caracteristicas.seguridad'] = filtros.seguridad;
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return await Propiedad.find(query).skip(skip).limit(limit);
+  return (await Propiedad.find(query).skip(skip).limit(limit).lean());
 }
 
 // **** Export default **** //
