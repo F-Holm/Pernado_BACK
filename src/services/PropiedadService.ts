@@ -31,14 +31,28 @@ async function getLimitSkip(limit: number, skip: number): Promise<IPropiedad[]> 
  * Get all users.
  */
 async function getFiltered(filtro: IFiltrosPropiedad): Promise<IPropiedad[]> {
-  return await PropiedadRepo.getFiltered(filtro);
+  const respuesta = await PropiedadRepo.getFiltered(filtro);
+  if (respuesta.length === 0) {
+    throw new RouteError(
+      HttpStatusCodes.NOT_FOUND,
+      PROPIEDAD_NOT_FOUND_ERR,
+    );
+  }
+  return respuesta;
 }
 
 /**
  * Get all users.
  */
 async function getFilteredLimitSkip(filtro: IFiltrosPropiedad, limit: number, skip: number): Promise<IPropiedad[]> {
-  return await PropiedadRepo.getFilteredLimitSkip(filtro, limit, skip);
+  const respuesta = await PropiedadRepo.getFilteredLimitSkip(filtro, limit, skip);
+  if (respuesta.length === 0) {
+    throw new RouteError(
+      HttpStatusCodes.NOT_FOUND,
+      PROPIEDAD_NOT_FOUND_ERR,
+    );
+  }
+  return respuesta;
 }
 
 /**

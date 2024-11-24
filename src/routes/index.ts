@@ -95,6 +95,24 @@ propiedadRouter.get(
   PropiedadRoutes.getAll,
 );
 
+// Get all users
+propiedadRouter.get(
+  Paths.Propiedad.GetLimitSkip,
+  PropiedadRoutes.getLimitSkip,
+);
+
+// Get all users
+propiedadRouter.get(
+  Paths.Propiedad.GetFiltered,
+  PropiedadRoutes.getFiltered,
+);
+
+// Get all users
+propiedadRouter.get(
+  Paths.Propiedad.GetFilteredLimitSkip,
+  PropiedadRoutes.getFilteredLimitSkip,
+);
+
 // Get one users
 propiedadRouter.get(
   Paths.Propiedad.GetOne,
