@@ -4,7 +4,7 @@ import Tarjeta, { ITarjeta } from './ITarjeta';
 
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
   'with the appropriate user keys.';
 
 
@@ -29,7 +29,7 @@ function new_(
   calificacion?: number,
   comentario?: string,
   vendedor?: number,
-  tarjeta?: ITarjeta
+  tarjeta?: ITarjeta,
 ): ICompra {
   return {
     propiedad: (propiedad ?? Propiedad.new()),
@@ -58,9 +58,9 @@ function isCompra(arg: unknown): boolean {
   return (
     !!arg &&
     typeof arg === 'object' &&
-    'propiedad' in arg && Propiedad.isPropiedad(arg.propiedad) && 
+    'propiedad' in arg && Propiedad.isPropiedad(arg.propiedad) &&
     'calificacion' in arg && typeof arg.calificacion === 'number' &&
-    'comentario' in arg && typeof arg.comentario === 'string' && 
+    'comentario' in arg && typeof arg.comentario === 'string' &&
     'vendedor' in arg && typeof arg.vendedor === 'number' &&
     'tarjeta' in arg && Tarjeta.isTarjeta(arg.tarjeta)
   );
