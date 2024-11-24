@@ -58,6 +58,10 @@ function new_(
   };
 }
 
+function isAdmin(usuario: IUsuario): boolean {
+  return usuario.admin;
+}
+
 /**
  * Get user instance from object.
  */
@@ -97,4 +101,5 @@ export default {
   new: new_,
   from,
   isUsuario,
+  isAdmin,
 } as const;
