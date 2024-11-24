@@ -7,7 +7,7 @@ import { IChat } from '@src/models/Chat';
 
 // **** Variables **** //
 
-export const USER_NOT_FOUND_ERR = 'User not found';
+export const CHAT_NOT_FOUND_ERR = 'Chat no encontrado';
 
 
 // **** Functions **** //
@@ -15,36 +15,42 @@ export const USER_NOT_FOUND_ERR = 'User not found';
 /**
  * Get all users.
  */
-function getAll(): Promise<IChat[]> {
-  return ChatRepo.getAll();
+async function getAll(): Promise<IChat[]> {
+  return await ChatRepo.getAll();
 }
 
 /**
  * Get one users.
  */
-function getOne(id: number): Promise<IChat> {
-    return ChatRepo.getOne(id);
+async function getOne(id: number): Promise<IChat> {
+  const chat = await ChatRepo.getOne(id);
+  if (chat == null) {
+    throw new RouteError(
+      HttpStatusCodes.NOT_FOUND,
+      CHAT_NOT_FOUND_ERR,
+    );
   }
+  return chat;
+}
 
 /**
  * Add one user.
  */
-function addOne(chat: IChat): Promise<void> {
-  return ChatRepo.add(chat);
+async function addOne(chat: IChat): Promise<void> {
+  return await ChatRepo.add(chat);
 }
 
 /**
  * Update one user.
  */
 async function updateOne(chat: IChat): Promise<void> {
-  const persists = await ChatRepo.persists(chat.id);
+  const persists : boolean = await ChatRepo.persists(chat.id);
   if (!persists) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
-      USER_NOT_FOUND_ERR,
+      CHAT_NOT_FOUND_ERR,
     );
   }
-  // Return user
   return ChatRepo.update(chat);
 }
 
@@ -52,15 +58,7 @@ async function updateOne(chat: IChat): Promise<void> {
  * Delete a user by their id.
  */
 async function _delete(id: number): Promise<void> {
-  const persists = await ChatRepo.persists(id);
-  if (!persists) {
-    throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
-      USER_NOT_FOUND_ERR,
-    );
-  }
-  // Delete user
-  return ChatRepo.delete(id);
+  return await ChatRepo.delete(id);
 }
 
 

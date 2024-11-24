@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import schemas from "./schemas";
+import mongoose from 'mongoose';
+import schemas from './schemas';
 
-const DB_URL: string = "mongodb://localhost:27017/Pernado";
+const DB_URL: string = 'mongodb://localhost:27017/Pernado';
 
 mongoose.connect(process.env.DATABASE || DB_URL);
 
@@ -10,7 +10,7 @@ export const Chat = mongoose.model('Chat', schemas.chatSchema);
 export const Propiedad = mongoose.model('Propiedad', schemas.propiedadSchema);
 
 export default {
-    Usuario,
-    Chat,
-    Propiedad
+  Usuario,
+  Chat,
+  Propiedad,
 } as const;
