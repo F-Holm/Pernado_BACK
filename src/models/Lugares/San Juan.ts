@@ -1,0 +1,22 @@
+// noinspection JSUnusedGlobalSymbols
+export enum MunicipiosSanJuan{
+  ALBARDON = 'Albardón',
+  ANGACO = 'Angaco',
+  CALINGASTA = 'Calingasta',
+  CAUCETE = 'Caucete',
+  CHIMBAS = 'Chimbas',
+  IGLESIA = 'Iglesia',
+  JACHAL = 'Jáchal',
+  NUEVE_DE_JULIO = 'Nueve de Julio',
+  POCITO = 'Pocito',
+  RAWSON = 'Rawson',
+  RIVADAVIA = 'Rivadavia',
+  SAN_JUAN = 'San Juan',
+  SAN_MARTIN = 'San Martín',
+  SANTA_LUCIA = 'Santa Lucía',
+  SARMIENTO = 'Sarmiento',
+  ULLUM = 'Ullum',
+  VALLE_FERTIL = 'Valle Fértil',
+  VEINTICINCO_DE_MAYO = 'Veinticinco de Mayo',
+  ZONDA = 'Zonda',
+}

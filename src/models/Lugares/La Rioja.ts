@@ -1,0 +1,21 @@
+// noinspection JSUnusedGlobalSymbols
+export enum MunicipiosLaRioja{
+  ARAUCO = 'Arauco',
+  CASTRO_BARROS = 'Castro Barros',
+  CHAMICAL = 'Chamical',
+  CHILECITO = 'Chilecito',
+  FAMATINA = 'Famatina',
+  GENERAL_BELGRANO = 'General Belgrano',
+  GENERAL_FELIPE_VARELA = 'General Felipe Varela',
+  GENERAL_JUAN_FACUNDO_QUIROGA = 'General Juan Facundo Quiroga',
+  GENERAL_LAMADRID = 'General Lamadrid',
+  GENERAL_ORTIZ_DE_OCAMPO = 'General Ortiz de Ocampo',
+  GENERAL_SAN_MARTIN = 'General San Martín',
+  GENERAL_ANGEL_VICENTE_PENALOZA = 'General Ángel Vicente Peñaloza',
+  INDEPENDENCIA = 'Independencia',
+  LA_RIOJA = 'La Rioja',
+  ROSARIO_VERA_PENALOZA = 'Rosario Vera Peñaloza',
+  SAN_BLAS_DE_LOS_SAUCES = 'San Blas de los Sauces',
+  SANAGASTA = 'Sanagasta',
+  VINCHINA = 'Vinchina',
+}
