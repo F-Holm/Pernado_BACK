@@ -78,6 +78,7 @@ const usuarioSchema = new mongoose.Schema({
   contrasenia: String,
   fechaNacimiento: Date,
   direccion: direccionSchema,
+  admin: Boolean,
 });
 
 export default {

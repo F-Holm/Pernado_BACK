@@ -21,6 +21,7 @@ export interface IUsuario {
   contrasenia: string;
   fechaNacimiento: Date;
   direccion: IDireccion;
+  admin: boolean;
 }
 
 
@@ -39,6 +40,7 @@ function new_(
   contrasenia?: string,
   fechaNacimiento?: Date,
   direccion?: IDireccion,
+  admin?: boolean,
   id?: number,
 ): IUsuario {
   return {
@@ -52,6 +54,7 @@ function new_(
     contrasenia: (contrasenia ?? ''),
     fechaNacimiento: (fechaNacimiento ? new Date(fechaNacimiento) : new Date()),
     direccion: (direccion ?? Direccion.new()),
+    admin: (admin ?? false),
   };
 }
 
@@ -63,7 +66,7 @@ function from(param: object): IUsuario {
     throw new Error(INVALID_CONSTRUCTOR_PARAM);
   }
   const p = param as IUsuario;
-  return new_(p.dni, p.email, p.telefono, p.nombre, p.apellido, p.nombreUsuario, p.contrasenia, p.fechaNacimiento, p.direccion, p.id);
+  return new_(p.dni, p.email, p.telefono, p.nombre, p.apellido, p.nombreUsuario, p.contrasenia, p.fechaNacimiento, p.direccion, p.admin, p.id);
 }
 
 /**
@@ -82,7 +85,8 @@ function isUsuario(arg: unknown): boolean {
     'nombreUsuario' in arg && typeof arg.nombreUsuario === 'string' &&
     'contrasenia' in arg && typeof arg.contrasenia === 'string' &&
     'fechaNacimiento' in arg && moment(arg.fechaNacimiento as string | Date).isValid() &&
-    'direccion' in arg && Direccion.isDireccion(arg.direccion)
+    'direccion' in arg && Direccion.isDireccion(arg.direccion) &&
+    'admin' in arg && typeof arg.admin === 'boolean'
   );
 }
 
