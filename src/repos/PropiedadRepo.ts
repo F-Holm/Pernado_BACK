@@ -29,7 +29,7 @@ async function getAll(): Promise<IPropiedad[]> {
  * Get some users.
  */
 async function getLimitSkip(limit: number, skip: number): Promise<IPropiedad[]> {
-  return (await Propiedad.find({}).skip(skip).limit(limit));
+  return (await Propiedad.find({}).skip(skip).limit(limit).lean());
 }
 
 /**

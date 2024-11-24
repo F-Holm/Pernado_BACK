@@ -19,7 +19,7 @@ export interface IPropiedad {
   duenio: number;
   precio: number;
   alquiler: boolean;
-  tipoPropiedad: TipoPropiedad;
+  tipoPropiedad: string;
   expensas: number;
   imagenes: string[];
   ubicacion: IDireccion;
@@ -39,7 +39,7 @@ function new_(
   duenio?: number,
   precio?: number,
   alquiler?: boolean,
-  tipoPropiedad?: TipoPropiedad,
+  tipoPropiedad?: string,
   expensas?: number,
   imagenes?: string[],
   ubicacion?: IDireccion,
