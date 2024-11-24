@@ -55,6 +55,7 @@ const propiedadSchema = new mongoose.Schema({
   tipoPropiedad: String,
   expensas: Number,
   imagenes: [String],
+  ubicacion: direccionSchema,
   preguntas: [preguntaSchema],
   caracteristicas: caracteristicasSchema,
 });
@@ -88,5 +89,4 @@ export default {
   propiedadSchema,
   compraSchema,
   usuarioSchema,
-  //tipoPropiedadSchema
 } as const;

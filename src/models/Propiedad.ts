@@ -1,5 +1,7 @@
 import { TipoPropiedad } from './TipoPropiedad';
 import Caracteristicas, { ICaracteristicas } from './Caracteristicas';
+import Direccion, {IDireccion} from '@src/models/Direccion';
+import Pregunta, {IPregunta} from '@src/models/Pregunta';
 
 
 // **** Variables **** //
@@ -19,7 +21,9 @@ export interface IPropiedad {
   alquiler: boolean;
   tipoPropiedad: TipoPropiedad;
   expensas: number;
-  imagenes: [string];
+  imagenes: string[];
+  ubicacion: IDireccion;
+  preguntas: IPregunta[];
   caracteristicas: ICaracteristicas;
 }
 
@@ -37,7 +41,9 @@ function new_(
   alquiler?: boolean,
   tipoPropiedad?: TipoPropiedad,
   expensas?: number,
-  imagenes?: [string],
+  imagenes?: string[],
+  ubicacion?: IDireccion,
+  preguntas?: IPregunta[],
   caracteristicas?: ICaracteristicas,
   id?: number,// id last cause usually set by db
 ): IPropiedad {
@@ -50,7 +56,9 @@ function new_(
     alquiler: (alquiler ?? false),
     tipoPropiedad: (tipoPropiedad ?? TipoPropiedad.CASA),
     expensas: (expensas ?? 0),
-    imagenes: (imagenes ?? ['']),
+    imagenes: (imagenes ?? []),
+    ubicacion: (ubicacion ?? Direccion.new()),
+    preguntas: (preguntas ?? []),
     caracteristicas: (caracteristicas ?? Caracteristicas.new()),
   };
 }
@@ -63,7 +71,7 @@ function from(param: object): IPropiedad {
     throw new Error(INVALID_CONSTRUCTOR_PARAM);
   }
   const p = param as IPropiedad;
-  return new_(p.titulo, p.descripcion, p.duenio, p.precio, p.alquiler, p.tipoPropiedad, p.expensas, p.imagenes, p.caracteristicas,p.id);
+  return new_(p.titulo, p.descripcion, p.duenio, p.precio, p.alquiler, p.tipoPropiedad, p.expensas, p.imagenes, p.ubicacion, p.preguntas, p.caracteristicas,p.id);
 }
 
 /**
@@ -81,7 +89,9 @@ function isPropiedad(arg: unknown): boolean {
     'alquiler' in arg && typeof arg.alquiler === 'boolean' &&
     'tipoPropiedad' in arg && typeof arg.tipoPropiedad === 'string' &&
     'expensas' in arg && typeof arg.expensas === 'number' &&
-    'imagenes' in arg && Array.isArray(arg.imagenes) &&
+    'imagenes' in arg && Array.isArray(arg.imagenes) && arg.imagenes.every(img => typeof img === 'string') &&
+    'ubicacion' in arg && Direccion.isDireccion(arg.ubicacion) &&
+    'preguntas' in arg && Array.isArray(arg.preguntas) && arg.preguntas.every(preg => Pregunta.isPregunta(preg)) &&
     'caracteristicas' in arg && Caracteristicas.isCaracteristicas(arg.caracteristicas)
   );
 }

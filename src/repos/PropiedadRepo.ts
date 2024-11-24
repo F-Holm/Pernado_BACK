@@ -26,6 +26,13 @@ async function getAll(): Promise<IPropiedad[]> {
 }
 
 /**
+ * Get some users.
+ */
+async function getLimitSkip(limit: number, skip: number): Promise<IPropiedad[]> {
+  return (await Propiedad.find({}).skip(skip).limit(limit));
+}
+
+/**
  * Add one user.
  */
 async function add(propiedad: IPropiedad): Promise<void> {
@@ -56,6 +63,7 @@ export default {
   getOne,
   persists,
   getAll,
+  getLimitSkip,
   add,
   update,
   delete: delete_,
