@@ -2,16 +2,16 @@ import moment from 'moment';
 
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
   'with the appropriate user keys.';
 
 
 // **** Types **** //
 
 export interface IMensaje {
-    contenido: string;
-    fecha: Date;
-    cliente:boolean;
+  contenido: string;
+  fecha: Date;
+  cliente:boolean;
 }
 
 
@@ -21,15 +21,15 @@ export interface IMensaje {
  * Create new User.
  */
 function new_(
-    contenido?: string,
-    fecha?: Date,
-    cliente?: boolean,
-    ): IMensaje {
-    return {
-        contenido: (contenido ?? ''),
-        fecha: (fecha ?? fecha ? new Date(fecha) : new Date()),
-        cliente: (cliente ?? false),
-    };
+  contenido?: string,
+  fecha?: Date,
+  cliente?: boolean,
+): IMensaje {
+  return {
+    contenido: (contenido ?? ''),
+    fecha: (fecha ?? fecha ? new Date(fecha) : new Date()),
+    cliente: (cliente ?? false),
+  };
 }
 /**
  * Get user instance from object.
@@ -52,7 +52,7 @@ function isMensaje(arg: unknown): boolean {
     'contenido' in arg && typeof arg.contenido === 'string' &&
     'fecha' in arg && moment(arg.fecha as string | Date).isValid() &&
     'cliente' in arg && typeof arg.cliente === 'boolean'
-    );
+  );
 }
 
 

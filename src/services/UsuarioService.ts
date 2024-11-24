@@ -7,29 +7,35 @@ import { IUsuario } from '@src/models/Usuario';
 
 // **** Variables **** //
 
-export const USER_NOT_FOUND_ERR = 'User not found';
+export const USUARIO_NOT_FOUND_ERR = 'Usuario no encontrado';
 
 
 // **** Functions **** //
-
 /**
  * Get all users.
  */
-function getAll(): Promise<IUsuario[]> {
+async function getAll(): Promise<IUsuario[]> {
   return UsuarioRepo.getAll();
 }
 
 /**
- * Get one users.
+ * Get one user.
  */
-function getOne(id: number): Promise<IUsuario> {
-  return UsuarioRepo.getOne(id);
+async function getOne(id: number): Promise<IUsuario> {
+  const usuario = await UsuarioRepo.getOne(id);
+  if (usuario == null) {
+    throw new RouteError(
+      HttpStatusCodes.NOT_FOUND,
+      USUARIO_NOT_FOUND_ERR,
+    );
+  }
+  return usuario;
 }
 
 /**
  * Add one user.
  */
-function addOne(usuario: IUsuario): Promise<void> {
+async function addOne(usuario: IUsuario): Promise<void> {
   return UsuarioRepo.add(usuario);
 }
 
@@ -37,30 +43,20 @@ function addOne(usuario: IUsuario): Promise<void> {
  * Update one user.
  */
 async function updateOne(usuario: IUsuario): Promise<void> {
-  const persists = await UsuarioRepo.persists(usuario.id);
-  if (!persists) {
+  if (!await UsuarioRepo.persists(usuario.id)) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
-      USER_NOT_FOUND_ERR,
+      USUARIO_NOT_FOUND_ERR,
     );
   }
-  // Return user
-  return UsuarioRepo.update(usuario);
+  return await UsuarioRepo.update(usuario);
 }
 
 /**
  * Delete a user by their id.
  */
 async function _delete(id: number): Promise<void> {
-  const persists = await UsuarioRepo.persists(id);
-  if (!persists) {
-    throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
-      USER_NOT_FOUND_ERR,
-    );
-  }
-  // Delete user
-  return UsuarioRepo.delete(id);
+  return await UsuarioRepo.delete(id);
 }
 
 

@@ -3,6 +3,9 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import PropiedadService from '@src/services/PropiedadService';
 import { IPropiedad } from '@src/models/Propiedad';
 import { IReq, IRes } from './types/express/misc';
+import FiltrosPropiedad, {
+  IFiltrosPropiedad,
+} from '@src/models/FiltrosPropiedad';
 
 
 // **** Functions **** //
@@ -16,7 +19,35 @@ async function getAll(_: IReq, res: IRes) {
 }
 
 /**
- * Get one users.
+ * Get one user.
+ */
+async function getLimitSkip(req: IReq<{limit: number, skip: number}>, res: IRes) {
+  const { limit } = req.body;
+  const { skip } = req.body;
+  const propiedades = await PropiedadService.getLimitSkip(limit, skip);
+  return res.status(HttpStatusCodes.OK).json({ propiedades });
+}
+
+/**
+ * Get one user.
+ */
+async function getFiltered(req: IReq<{filtrosPropiedades: IFiltrosPropiedad}>, res: IRes) {
+  const { filtrosPropiedades } = req.body;
+  const propiedades = await PropiedadService.getFiltered(filtrosPropiedades);
+  return res.status(HttpStatusCodes.OK).json({ propiedades });
+}
+
+/**
+ * Get one user.
+ */
+async function getFilteredLimitSkip(req: IReq<{filtrosPropiedades: IFiltrosPropiedad, limit: number, skip: number}>, res: IRes) {
+  const { filtrosPropiedades, limit, skip } = req.body;
+  const propiedades = await PropiedadService.getFilteredLimitSkip(filtrosPropiedades, limit, skip);
+  return res.status(HttpStatusCodes.OK).json({ propiedades });
+}
+
+/**
+ * Get one user.
  */
 async function getOne(req: IReq, res: IRes) {
   const id = +req.params.id;
@@ -58,6 +89,9 @@ export default {
   getAll,
   add,
   getOne,
+  getLimitSkip,
+  getFiltered,
+  getFilteredLimitSkip,
   update,
   delete: delete_,
 } as const;

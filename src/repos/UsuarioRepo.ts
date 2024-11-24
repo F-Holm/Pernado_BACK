@@ -8,8 +8,15 @@ import bcrypt from 'bcrypt';
 /**
  * Get one user.
  */
-async function getOne(id: number): Promise<any | null> {
-  return await Usuario.findOne({ id: id });
+async function getOne(id: number): Promise<IUsuario | null> {
+  return (await Usuario.findOne({ id: id }));
+}
+
+/**
+ * Get one user email.
+ */
+async function getOneEmail(email: string): Promise<IUsuario | null> {
+  return (await Usuario.findOne({ email: email }));
 }
 
 /**
@@ -20,50 +27,56 @@ async function persists(id: number): Promise<boolean> {
 }
 
 /**
- * Get all users.
+ * See if a user with the given email exists.
  */
-async function getAll(): Promise<any[]> {
-  return await Usuario.find({});
+async function persistsEmail(email: string): Promise<boolean> {
+  return !!(await getOneEmail(email));
 }
 
+/**
+ * Get all users.
+ */
+async function getAll(): Promise<IUsuario[]> {
+  return (await Usuario.find({}));
+}
 
 /**
  * Add one user.
  */
-async function add(usuario: IUsuario): Promise<any> {
+
+async function add(usuario: IUsuario): Promise<void> {
+  usuario.contrasenia = await bcrypt.hash(usuario.contrasenia, 10);
   do{
-    const contra = await bcrypt.hash(usuario.contrasenia, 10);
-    usuario.id = getRandomInt()
-    usuario.contrasenia = contra;
+    usuario.id = getRandomInt();
   } while(await persists(usuario.id));
-  return await (new Usuario(usuario)).save();
+  await (new Usuario(usuario)).save();
 }
 
 /**
  * Update a user.
  */
-async function update(usuario: IUsuario): Promise<any> {
+async function update(usuario: IUsuario): Promise<void> {
   do{
-    const contra = await bcrypt.hash(usuario.contrasenia, 10);
-    usuario.contrasenia = contra;
-  }while(await persists(usuario.id));{
-  return await Usuario.findOneAndUpdate({ id: usuario.id }, new Usuario(usuario), { new: true });
-  }
+    usuario.contrasenia = await bcrypt.hash(usuario.contrasenia, 10);
+  }while(await persists(usuario.id));
+  await Usuario.findOneAndUpdate({ id: usuario.id }, new Usuario(usuario), { new: true });
 }
 
 /**
  * Delete one user.
  */
-async function delete_(id: number): Promise<any> {
-  return await Usuario.findOneAndDelete({ id: id });
+async function delete_(id: number): Promise<void> {
+  await Usuario.findOneAndDelete({ id: id });
 }
 
 
 // **** Export default **** //
 
 export default {
+  getOneEmail,
   getOne,
   persists,
+  persistsEmail,
   getAll,
   add,
   update,
