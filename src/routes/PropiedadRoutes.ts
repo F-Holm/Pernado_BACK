@@ -50,9 +50,9 @@ async function getFilteredLimitSkip(req: IReq<{filtrosPropiedades: IFiltrosPropi
  * Get one user.
  */
 async function getOne(req: IReq, res: IRes) {
-  const id = +req.params.id;
-  await PropiedadService.getOne(id);
-  return res.status(HttpStatusCodes.OK).end();
+  const id =+req.params.id;
+  const propiedad = await PropiedadService.getOne(id);
+  return res.status(HttpStatusCodes.OK).json({ propiedad });
 }
 
 /**

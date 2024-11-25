@@ -20,8 +20,8 @@ async function getAll(_: IReq, res: IRes) {
  */
 async function getOne(req: IReq, res: IRes) {
   const id = +req.params.id;
-  await UsuarioService.getOne(id);
-  return res.status(HttpStatusCodes.OK).end();
+  const usuario =   await UsuarioService.getOne(id);
+  return res.status(HttpStatusCodes.OK).json({ usuario });
 }
 
 /**
