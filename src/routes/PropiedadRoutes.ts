@@ -20,6 +20,14 @@ async function getAll(_: IReq, res: IRes) {
 }
 
 /**
+ * Get one user.
+ */
+async function getCant(req: IReq, res: IRes) {
+  const cant: number = await PropiedadService.getCant();
+  return res.status(HttpStatusCodes.OK).json({ cant });
+}
+
+/**
  * get de todas las propiedades de x usuario.
  */
 async function getUsuario(req: IReq, res: IRes) {
@@ -131,6 +139,7 @@ export default {
   getAll,
   add,
   getOne,
+  getCant,
   getUsuario,
   getLimitSkip,
   getFiltered,

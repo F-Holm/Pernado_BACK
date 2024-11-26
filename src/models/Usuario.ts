@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import moment from 'moment';
 import { IDireccion } from './Direccion';
 import Direccion from './Direccion';

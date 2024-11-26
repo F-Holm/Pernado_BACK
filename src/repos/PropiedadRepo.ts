@@ -14,6 +14,13 @@ async function getOne(id: number): Promise<IPropiedad | null> {
 }
 
 /**
+ * Get one user.
+ */
+async function getCant(): Promise<number> {
+  return (await Propiedad.countDocuments());
+}
+
+/**
  * See if a user with the given id exists.
  */
 async function persists(id: number): Promise<boolean> {
@@ -124,6 +131,7 @@ export default {
   persists,
   getUsuario,
   getAll,
+  getCant,
   getLimitSkip,
   getFiltered,
   getFilteredLimitSkip,

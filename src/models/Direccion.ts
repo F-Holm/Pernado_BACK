@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // **** Variables **** //
 
 const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
@@ -9,7 +10,8 @@ const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
 export interface IDireccion {
   provincia: string;
   municipio: string;
-  direccion: string
+  direccion: string;
+  piso_departamento: string;
   codigoPostal: number;
 }
 
@@ -23,12 +25,14 @@ function new_(
   provincia?: string,
   municipio?: string,
   direccion?: string,
+  piso_departamento?: string,
   codigoPostal?: number,
 ): IDireccion {
   return {
     provincia: (provincia ?? ''),
     municipio: (municipio ?? ''),
     direccion: (direccion ?? ''),
+    piso_departamento: (piso_departamento ?? ''),
     codigoPostal: (codigoPostal ?? 0),
   };
 }
@@ -41,7 +45,7 @@ function from(param: object): IDireccion {
     throw new Error(INVALID_CONSTRUCTOR_PARAM);
   }
   const p = param as IDireccion;
-  return new_(p.provincia, p.municipio, p.direccion, p.codigoPostal);
+  return new_(p.provincia, p.municipio, p.direccion, p.piso_departamento, p.codigoPostal);
 }
 
 /**
@@ -54,6 +58,7 @@ function isDireccion(arg: unknown): boolean {
     'provincia' in arg && typeof arg.provincia === 'string' &&
     'municipio' in arg && typeof arg.municipio === 'string' &&
     'direccion' in arg && typeof arg.direccion === 'string' &&
+    'piso_departamento' in arg && typeof arg.piso_departamento === 'string' &&
     'codigoPostal' in arg && typeof arg.codigoPostal === 'number'
   );
 }

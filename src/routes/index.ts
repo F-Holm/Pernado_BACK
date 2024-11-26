@@ -122,6 +122,12 @@ propiedadRouter.get(
 
 // Get all users
 propiedadRouter.get(
+  Paths.Propiedad.GetCant,
+  PropiedadRoutes.getCant,
+);
+
+// Get all users
+propiedadRouter.get(
   Paths.Propiedad.GetFiltered,
   PropiedadRoutes.getFiltered,
 );

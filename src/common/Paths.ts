@@ -30,6 +30,7 @@ export default {
     Base: '/propiedad',
     Get: '/',
     GetOne: '/:id',
+    GetCant: '/cant',
     GetUsuario: '/usuario/:id',
     GetLimitSkip: '/ls',
     GetFiltered: '/filtered',

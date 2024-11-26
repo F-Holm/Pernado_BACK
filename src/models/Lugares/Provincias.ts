@@ -1,5 +1,5 @@
 // noinspection JSUnusedGlobalSymbols
-export enum MunicipiosProvincias{
+export enum Provincias{
   BUENOS_AIRES = 'Buenos Aires',
   CATAMARCA = 'Catamarca',
   CHACO = 'Chaco',
