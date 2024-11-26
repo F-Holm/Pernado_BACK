@@ -47,28 +47,30 @@ async function getUsuario(req: IReq, res: IRes) {
 /**
  * Get one user.
  */
-async function getLimitSkip(req: IReq<{limit: number, skip: number}>, res: IRes) {
-  const { limit } = req.body;
-  const { skip } = req.body;
-  const propiedades = await PropiedadService.getLimitSkip(limit, skip);
+async function getLimitSkip(req: IReq, res: IRes) {
+  const limit: number = +req.params.limit;
+  const skip: number = +req.params.skip;
+  const propiedades: IPropiedad[] = await PropiedadService.getLimitSkip(limit, skip);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
 /**
  * Get one user.
  */
-async function getFiltered(req: IReq<{filtrosPropiedades: IFiltrosPropiedad}>, res: IRes) {
-  const { filtrosPropiedades } = req.body;
-  const propiedades = await PropiedadService.getFiltered(filtrosPropiedades);
+async function getFiltered(req: IReq, res: IRes) {
+  const filtrosPropiedad: IFiltrosPropiedad = JSON.parse(req.params.filtro) as IFiltrosPropiedad;
+  const propiedades: IPropiedad[] = await PropiedadService.getFiltered(filtrosPropiedad);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
 /**
  * Get one user.
  */
-async function getFilteredLimitSkip(req: IReq<{filtrosPropiedades: IFiltrosPropiedad, limit: number, skip: number}>, res: IRes) {
-  const { filtrosPropiedades, limit, skip } = req.body;
-  const propiedades = await PropiedadService.getFilteredLimitSkip(filtrosPropiedades, limit, skip);
+async function getFilteredLimitSkip(req: IReq, res: IRes) {
+  const filtrosPropiedad: IFiltrosPropiedad = JSON.parse(req.params.filtro) as IFiltrosPropiedad;
+  const limit: number = +req.params.limit;
+  const skip: number = +req.params.skip;
+  const propiedades: IPropiedad[] = await PropiedadService.getFilteredLimitSkip(filtrosPropiedad, limit, skip);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
@@ -76,8 +78,8 @@ async function getFilteredLimitSkip(req: IReq<{filtrosPropiedades: IFiltrosPropi
  * Get one user.
  */
 async function getOne(req: IReq, res: IRes) {
-  const id =+req.params.id;
-  const propiedad = await PropiedadService.getOne(id);
+  const id: number =+req.params.id;
+  const propiedad: IPropiedad = await PropiedadService.getOne(id);
   return res.status(HttpStatusCodes.OK).json({ propiedad });
 }
 
