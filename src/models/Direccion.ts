@@ -63,11 +63,16 @@ function isDireccion(arg: unknown): boolean {
   );
 }
 
+function dirCompleta(direccion: IDireccion): string {
+  return direccion.direccion + ', ' + direccion.municipio + ', ' + direccion.provincia + ', Argentina';
+}
+
 
 // **** Export default **** //
 
 export default {
   new: new_,
   from,
+  dirCompleta,
   isDireccion,
 } as const;

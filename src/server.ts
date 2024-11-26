@@ -19,6 +19,7 @@ import RouteError from '@src/common/RouteError';
 import { NodeEnvs } from '@src/common/misc';
 
 import cors from 'cors';
+import path from 'path';
 
 
 // **** Variables **** //
@@ -27,6 +28,9 @@ const app = express();
 
 
 // **** Setup **** //
+
+// Middleware para servir archivos estáticos
+app.use('/api/img/', express.static(path.join(__dirname, './imagenes')));
 
 // Basic middleware
 app.use(express.json());

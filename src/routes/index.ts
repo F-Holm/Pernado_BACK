@@ -5,6 +5,7 @@ import ChatRoutes from './ChatRoutes';
 import PropiedadRoutes from './PropiedadRoutes';
 import AuthRoutes from './AuthRoutes';
 import {verificarToken} from '@src/middleware/verificarToken';
+import upload from '@src/middleware/multerImages';
 
 
 // **** Variables **** //
@@ -14,10 +15,10 @@ const apiRouter = Router();
 
 // ** Add UserRouter ** //
 
-const usuarioRouter = Router();
-const chatRouter = Router();
-const propiedadRouter = Router();
-const authRouter = Router();
+const usuarioRouter: Router = Router();
+const chatRouter: Router = Router();
+const propiedadRouter: Router = Router();
+const authRouter: Router = Router();
 
 // Auth
 authRouter.post(
@@ -148,6 +149,7 @@ propiedadRouter.get(
 propiedadRouter.post(
   Paths.Propiedad.Add,
   verificarToken,
+  upload.array('imagenes', 100),
   PropiedadRoutes.add,
 );
 
@@ -155,6 +157,7 @@ propiedadRouter.post(
 propiedadRouter.put(
   Paths.Propiedad.Update,
   verificarToken,
+  upload.array('imagenes', 100),
   PropiedadRoutes.update,
 );
 
