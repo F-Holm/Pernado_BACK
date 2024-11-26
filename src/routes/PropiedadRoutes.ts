@@ -82,8 +82,8 @@ async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
-  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && propiedad.duenio != id_token) {
-    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token))) {
+    propiedad.duenio = id_token;
   }
 
   await PropiedadService.addOne(propiedad);

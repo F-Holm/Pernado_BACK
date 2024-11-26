@@ -21,6 +21,7 @@ export default {
     Base: '/chat',
     Get: '/',
     GetOne: '/:id',
+    GetMyChats: '/mychats/:id',
     Add: '/',
     Update: '/',
     Delete: '/:id',

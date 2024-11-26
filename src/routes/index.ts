@@ -66,6 +66,13 @@ chatRouter.get(
   ChatRoutes.getAll,
 );
 
+// Get all users
+chatRouter.get(
+  Paths.Chat.GetMyChats,
+  verificarToken,
+  ChatRoutes.getMyChats,
+);
+
 // Get one users
 chatRouter.get(
   Paths.Chat.GetOne,

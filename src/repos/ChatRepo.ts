@@ -21,10 +21,21 @@ async function persists(id: number): Promise<boolean> {
 /**
  * Get all users.
  */
+async function getMyChats(idMiembro: number): Promise<IChat[]> {
+  return (await Chat.find({
+    $or: [
+      { comprador: idMiembro },
+      { vendedor: idMiembro },
+    ],
+  }));
+}
+
+/**
+ * Get all users.
+ */
 async function getAll(): Promise<IChat[]> {
   return (await Chat.find({}));
 }
-
 
 /**
  * Add one user.
@@ -58,6 +69,7 @@ export default {
   persists,
   getAll,
   add,
+  getMyChats,
   update,
   delete: delete_,
 } as const;

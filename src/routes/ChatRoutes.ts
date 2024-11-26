@@ -25,6 +25,23 @@ async function getAll(req: IReq, res: IRes) {
 }
 
 /**
+ * Get all users.
+ */
+async function getMyChats(req: IReq, res: IRes) {
+  const idMiembro: number = +req.params.id;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && idMiembro != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
+  const chats: IChat[] = await ChatService.getMyChats(idMiembro);
+  return res.status(HttpStatusCodes.OK).json({ chats });
+}
+
+/**
  * Get one user.
  */
 async function getOne(req: IReq, res: IRes) {
@@ -98,6 +115,7 @@ async function delete_(req: IReq, res: IRes) {
 export default {
   getAll,
   add,
+  getMyChats,
   getOne,
   update,
   delete: delete_,
