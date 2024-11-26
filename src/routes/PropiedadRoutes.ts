@@ -7,6 +7,7 @@ import { IReq, IRes } from './types/express/misc';
 import {IFiltrosPropiedad} from '@src/models/FiltrosPropiedad';
 import Usuario from '@src/models/Usuario';
 import UsuarioService from '@src/services/UsuarioService';
+import ImagenesRepo from '@src/repos/ImagenesRepo';
 
 
 // **** Functions **** //
@@ -17,6 +18,14 @@ import UsuarioService from '@src/services/UsuarioService';
 async function getAll(_: IReq, res: IRes) {
   const propiedades = await PropiedadService.getAll();
   return res.status(HttpStatusCodes.OK).json({ propiedades });
+}
+
+/**
+ * Get one user.
+ */
+async function getCant(req: IReq, res: IRes) {
+  const cant: number = await PropiedadService.getCant();
+  return res.status(HttpStatusCodes.OK).json({ cant });
 }
 
 /**
@@ -39,28 +48,30 @@ async function getUsuario(req: IReq, res: IRes) {
 /**
  * Get one user.
  */
-async function getLimitSkip(req: IReq<{limit: number, skip: number}>, res: IRes) {
-  const { limit } = req.body;
-  const { skip } = req.body;
-  const propiedades = await PropiedadService.getLimitSkip(limit, skip);
+async function getLimitSkip(req: IReq, res: IRes) {
+  const limit: number = +req.params.limit;
+  const skip: number = +req.params.skip;
+  const propiedades: IPropiedad[] = await PropiedadService.getLimitSkip(limit, skip);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
 /**
  * Get one user.
  */
-async function getFiltered(req: IReq<{filtrosPropiedades: IFiltrosPropiedad}>, res: IRes) {
-  const { filtrosPropiedades } = req.body;
-  const propiedades = await PropiedadService.getFiltered(filtrosPropiedades);
+async function getFiltered(req: IReq, res: IRes) {
+  const filtrosPropiedad: IFiltrosPropiedad = JSON.parse(req.params.filtro) as IFiltrosPropiedad;
+  const propiedades: IPropiedad[] = await PropiedadService.getFiltered(filtrosPropiedad);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
 /**
  * Get one user.
  */
-async function getFilteredLimitSkip(req: IReq<{filtrosPropiedades: IFiltrosPropiedad, limit: number, skip: number}>, res: IRes) {
-  const { filtrosPropiedades, limit, skip } = req.body;
-  const propiedades = await PropiedadService.getFilteredLimitSkip(filtrosPropiedades, limit, skip);
+async function getFilteredLimitSkip(req: IReq, res: IRes) {
+  const filtrosPropiedad: IFiltrosPropiedad = JSON.parse(req.params.filtro) as IFiltrosPropiedad;
+  const limit: number = +req.params.limit;
+  const skip: number = +req.params.skip;
+  const propiedades: IPropiedad[] = await PropiedadService.getFilteredLimitSkip(filtrosPropiedad, limit, skip);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
@@ -68,8 +79,8 @@ async function getFilteredLimitSkip(req: IReq<{filtrosPropiedades: IFiltrosPropi
  * Get one user.
  */
 async function getOne(req: IReq, res: IRes) {
-  const id =+req.params.id;
-  const propiedad = await PropiedadService.getOne(id);
+  const id: number =+req.params.id;
+  const propiedad: IPropiedad = await PropiedadService.getOne(id);
   return res.status(HttpStatusCodes.OK).json({ propiedad });
 }
 
@@ -82,11 +93,15 @@ async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
-  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && propiedad.duenio != id_token) {
-    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token))) {
+    propiedad.duenio = id_token;
   }
 
   await PropiedadService.addOne(propiedad);
+  return res.status(HttpStatusCodes.CREATED).end();
+}
+
+function postImg(req: IReq, res: IRes) {
   return res.status(HttpStatusCodes.CREATED).end();
 }
 
@@ -120,6 +135,10 @@ async function delete_(req: IReq, res: IRes) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
+  for (const imagen of (await PropiedadService.getOne(id)).imagenes) {
+    ImagenesRepo.eliminarImagen(imagen);
+  }
+
   await PropiedadService.delete(id);
   return res.status(HttpStatusCodes.OK).end();
 }
@@ -131,9 +150,11 @@ export default {
   getAll,
   add,
   getOne,
+  getCant,
   getUsuario,
   getLimitSkip,
   getFiltered,
+  postImg,
   getFilteredLimitSkip,
   update,
   delete: delete_,

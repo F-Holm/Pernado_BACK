@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
   'with the appropriate user keys.';
 
 
@@ -87,7 +88,7 @@ function isCaracteristicas(arg: unknown): boolean {
   return (
     !!arg &&
     typeof arg === 'object' &&
-    'cantidadAmbientes' in arg && typeof arg.cantidadAmbientes === 'number' && 
+    'cantidadAmbientes' in arg && typeof arg.cantidadAmbientes === 'number' &&
     'm2Totales' in arg && typeof arg.m2Totales === 'number' &&
     'm2Cubiertos' in arg && typeof arg.m2Cubiertos === 'number' &&
     'cantidadBanios' in arg && typeof arg.cantidadBanios === 'number' &&

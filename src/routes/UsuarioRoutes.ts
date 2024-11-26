@@ -1,10 +1,8 @@
 /* eslint-disable max-len,@typescript-eslint/no-unsafe-member-access */
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-
 import UsuarioService from '@src/services/UsuarioService';
 import Usuario, { IUsuario } from '@src/models/Usuario';
 import { IReq, IRes } from './types/express/misc';
-import PropiedadService from '@src/services/PropiedadService';
 
 
 // **** Functions **** //

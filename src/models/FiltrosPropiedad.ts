@@ -1,3 +1,4 @@
+/* eslint-disable max-len,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access */
 // **** Variables **** //
 
 const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' +
@@ -83,7 +84,7 @@ function new_(
   balcon?: boolean,
   patio?: boolean,
   gimnasio?: boolean,
-  seguridad?: boolean
+  seguridad?: boolean,
 ): IFiltrosPropiedad {
   return {
     precioMin: precioMin,

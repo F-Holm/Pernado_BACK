@@ -19,6 +19,10 @@ async function getAll(): Promise<IChat[]> {
   return await ChatRepo.getAll();
 }
 
+async function getMyChats(idMiembro: number): Promise<IChat[]> {
+  return await ChatRepo.getMyChats(idMiembro);
+}
+
 /**
  * Get one users.
  */
@@ -67,6 +71,7 @@ async function _delete(id: number): Promise<void> {
 export default {
   getAll,
   getOne,
+  getMyChats,
   addOne,
   updateOne,
   delete: _delete,

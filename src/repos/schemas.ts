@@ -4,6 +4,7 @@ const direccionSchema = new mongoose.Schema({
   provincia: String,
   municipio: String,
   direccion: String,
+  piso_departamento: String,
   codigoPostal: Number,
 });
 

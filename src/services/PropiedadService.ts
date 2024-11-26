@@ -21,6 +21,13 @@ async function getAll(): Promise<IPropiedad[]> {
 }
 
 /**
+ * Get all users.
+ */
+async function getCant(): Promise<number> {
+  return await PropiedadRepo.getCant();
+}
+
+/**
  * get de todas las propiedades de x usuario.
  */
 async function getUsuario(idUsuario: number): Promise<IPropiedad[]> {
@@ -111,6 +118,7 @@ export default {
   getAll,
   getUsuario,
   getOne,
+  getCant,
   getLimitSkip,
   getFiltered,
   getFilteredLimitSkip,

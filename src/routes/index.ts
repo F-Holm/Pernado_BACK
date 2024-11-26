@@ -5,6 +5,7 @@ import ChatRoutes from './ChatRoutes';
 import PropiedadRoutes from './PropiedadRoutes';
 import AuthRoutes from './AuthRoutes';
 import {verificarToken} from '@src/middleware/verificarToken';
+import upload from '@src/middleware/multerImages';
 
 
 // **** Variables **** //
@@ -14,10 +15,10 @@ const apiRouter = Router();
 
 // ** Add UserRouter ** //
 
-const usuarioRouter = Router();
-const chatRouter = Router();
-const propiedadRouter = Router();
-const authRouter = Router();
+const usuarioRouter: Router = Router();
+const chatRouter: Router = Router();
+const propiedadRouter: Router = Router();
+const authRouter: Router = Router();
 
 // Auth
 authRouter.post(
@@ -64,6 +65,13 @@ chatRouter.get(
   Paths.Chat.Get,
   verificarToken,
   ChatRoutes.getAll,
+);
+
+// Get all users
+chatRouter.get(
+  Paths.Chat.GetMyChats,
+  verificarToken,
+  ChatRoutes.getMyChats,
 );
 
 // Get one users
@@ -115,6 +123,12 @@ propiedadRouter.get(
 
 // Get all users
 propiedadRouter.get(
+  Paths.Propiedad.GetCant,
+  PropiedadRoutes.getCant,
+);
+
+// Get all users
+propiedadRouter.get(
   Paths.Propiedad.GetFiltered,
   PropiedadRoutes.getFiltered,
 );
@@ -135,6 +149,7 @@ propiedadRouter.get(
 propiedadRouter.post(
   Paths.Propiedad.Add,
   verificarToken,
+  upload.array('img', 100),
   PropiedadRoutes.add,
 );
 
@@ -143,6 +158,14 @@ propiedadRouter.put(
   Paths.Propiedad.Update,
   verificarToken,
   PropiedadRoutes.update,
+);
+
+// Update one user
+propiedadRouter.post(
+  Paths.Propiedad.Img,
+  verificarToken,
+  upload.array('img', 100),
+  PropiedadRoutes.postImg,
 );
 
 // Delete one user
