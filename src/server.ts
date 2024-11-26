@@ -30,7 +30,7 @@ const app = express();
 // **** Setup **** //
 
 // Middleware para servir archivos estáticos
-app.use('/api/img/', express.static(path.join(__dirname, './imagenes')));
+app.use('/api/img/', express.static(path.join(__dirname, '../imagenes')));
 
 // Basic middleware
 app.use(express.json());

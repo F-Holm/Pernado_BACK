@@ -149,7 +149,7 @@ propiedadRouter.get(
 propiedadRouter.post(
   Paths.Propiedad.Add,
   verificarToken,
-  upload.array('imagenes', 100),
+  upload.array('img', 100),
   PropiedadRoutes.add,
 );
 
@@ -157,8 +157,15 @@ propiedadRouter.post(
 propiedadRouter.put(
   Paths.Propiedad.Update,
   verificarToken,
-  upload.array('imagenes', 100),
   PropiedadRoutes.update,
+);
+
+// Update one user
+propiedadRouter.post(
+  Paths.Propiedad.Img,
+  verificarToken,
+  upload.array('img', 100),
+  PropiedadRoutes.postImg,
 );
 
 // Delete one user

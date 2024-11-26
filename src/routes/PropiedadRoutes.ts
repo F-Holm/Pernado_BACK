@@ -2,7 +2,7 @@
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import PropiedadService from '@src/services/PropiedadService';
-import propiedad, { IPropiedad } from '@src/models/Propiedad';
+import { IPropiedad } from '@src/models/Propiedad';
 import { IReq, IRes } from './types/express/misc';
 import {IFiltrosPropiedad} from '@src/models/FiltrosPropiedad';
 import Usuario from '@src/models/Usuario';
@@ -88,7 +88,6 @@ async function getOne(req: IReq, res: IRes) {
  * Add one user.
  */
 async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
-  const files: Express.Multer.File[] = req.files as Express.Multer.File[];
   const { propiedad } = req.body;
 
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
@@ -98,16 +97,11 @@ async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
     propiedad.duenio = id_token;
   }
 
-  propiedad.imagenes = [];
-  if (files.length > 0) {
-    for (const file of files) {
-      propiedad.imagenes.push(file.filename);
-    }
-  }
-
-  console.log(propiedad.imagenes);
-
   await PropiedadService.addOne(propiedad);
+  return res.status(HttpStatusCodes.CREATED).end();
+}
+
+function postImg(req: IReq, res: IRes) {
   return res.status(HttpStatusCodes.CREATED).end();
 }
 
@@ -115,7 +109,6 @@ async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
  * Update one user.
  */
 async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
-  const files: Express.Multer.File[] = req.files as Express.Multer.File[];
   const { propiedad } = req.body;
 
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
@@ -123,19 +116,6 @@ async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
 
   if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && propiedad.duenio != id_token) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
-  }
-
-  if (propiedad.imagenes.length < (await PropiedadService.getOne(propiedad.id)).imagenes.length) {
-    for (const imagen of (await PropiedadService.getOne(propiedad.id)).imagenes) {
-      if (!propiedad.imagenes.includes(imagen)) {
-        ImagenesRepo.eliminarImagen(imagen);
-      }
-    }
-  }
-  if (files.length > 0) {
-    for (const file of files) {
-      propiedad.imagenes.push(file.filename);
-    }
   }
 
   await PropiedadService.updateOne(propiedad);
@@ -174,6 +154,7 @@ export default {
   getUsuario,
   getLimitSkip,
   getFiltered,
+  postImg,
   getFilteredLimitSkip,
   update,
   delete: delete_,

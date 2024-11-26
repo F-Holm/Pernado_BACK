@@ -29,6 +29,7 @@ export default {
   Propiedad: {
     Base: '/propiedad',
     Get: '/',
+    Img: '/img',
     GetOne: '/:id',
     GetCant: '/cant',
     GetUsuario: '/usuario/:id',
