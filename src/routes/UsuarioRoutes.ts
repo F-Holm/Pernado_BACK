@@ -1,8 +1,10 @@
+/* eslint-disable max-len,@typescript-eslint/no-unsafe-member-access */
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import UsuarioService from '@src/services/UsuarioService';
-import { IUsuario } from '@src/models/Usuario';
+import Usuario, { IUsuario } from '@src/models/Usuario';
 import { IReq, IRes } from './types/express/misc';
+import PropiedadService from '@src/services/PropiedadService';
 
 
 // **** Functions **** //
@@ -10,7 +12,14 @@ import { IReq, IRes } from './types/express/misc';
 /**
  * Get all users.
  */
-async function getAll(_: IReq, res: IRes) {
+async function getAll(req: IReq, res: IRes) {
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token))) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
   const usuarios = await UsuarioService.getAll();
   return res.status(HttpStatusCodes.OK).json({ usuarios });
 }
@@ -20,8 +29,16 @@ async function getAll(_: IReq, res: IRes) {
  */
 async function getOne(req: IReq, res: IRes) {
   const id = +req.params.id;
-  await UsuarioService.getOne(id);
-  return res.status(HttpStatusCodes.OK).end();
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && id != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
+  const usuario =   await UsuarioService.getOne(id);
+  return res.status(HttpStatusCodes.OK).json({ usuario });
 }
 
 /**
@@ -38,6 +55,14 @@ async function add(req: IReq<{usuario: IUsuario}>, res: IRes) {
  */
 async function update(req: IReq<{usuario: IUsuario}>, res: IRes) {
   const { usuario } = req.body;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && usuario.id != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
   await UsuarioService.updateOne(usuario);
   return res.status(HttpStatusCodes.OK).end();
 }
@@ -47,6 +72,14 @@ async function update(req: IReq<{usuario: IUsuario}>, res: IRes) {
  */
 async function delete_(req: IReq, res: IRes) {
   const id = +req.params.id;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && id != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
   await UsuarioService.delete(id);
   return res.status(HttpStatusCodes.OK).end();
 }

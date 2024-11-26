@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access,max-len */
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import PropiedadService from '@src/services/PropiedadService';
 import { IPropiedad } from '@src/models/Propiedad';
 import { IReq, IRes } from './types/express/misc';
-import FiltrosPropiedad, {
-  IFiltrosPropiedad,
-} from '@src/models/FiltrosPropiedad';
+import {IFiltrosPropiedad} from '@src/models/FiltrosPropiedad';
+import Usuario from '@src/models/Usuario';
+import UsuarioService from '@src/services/UsuarioService';
 
 
 // **** Functions **** //
@@ -15,6 +16,23 @@ import FiltrosPropiedad, {
  */
 async function getAll(_: IReq, res: IRes) {
   const propiedades = await PropiedadService.getAll();
+  return res.status(HttpStatusCodes.OK).json({ propiedades });
+}
+
+/**
+ * get de todas las propiedades de x usuario.
+ */
+async function getUsuario(req: IReq, res: IRes) {
+  const idUsuario: number =+req.params.id;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && idUsuario != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
+  const propiedades = await PropiedadService.getUsuario(idUsuario);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
@@ -50,9 +68,9 @@ async function getFilteredLimitSkip(req: IReq<{filtrosPropiedades: IFiltrosPropi
  * Get one user.
  */
 async function getOne(req: IReq, res: IRes) {
-  const id = +req.params.id;
-  await PropiedadService.getOne(id);
-  return res.status(HttpStatusCodes.OK).end();
+  const id =+req.params.id;
+  const propiedad = await PropiedadService.getOne(id);
+  return res.status(HttpStatusCodes.OK).json({ propiedad });
 }
 
 /**
@@ -60,6 +78,14 @@ async function getOne(req: IReq, res: IRes) {
  */
 async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
   const { propiedad } = req.body;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && propiedad.duenio != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
   await PropiedadService.addOne(propiedad);
   return res.status(HttpStatusCodes.CREATED).end();
 }
@@ -69,6 +95,14 @@ async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
  */
 async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
   const { propiedad } = req.body;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && propiedad.duenio != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
   await PropiedadService.updateOne(propiedad);
   return res.status(HttpStatusCodes.OK).end();
 }
@@ -78,6 +112,14 @@ async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
  */
 async function delete_(req: IReq, res: IRes) {
   const id = +req.params.id;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && (await PropiedadService.getOne(id)).duenio != id_token) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
   await PropiedadService.delete(id);
   return res.status(HttpStatusCodes.OK).end();
 }
@@ -89,6 +131,7 @@ export default {
   getAll,
   add,
   getOne,
+  getUsuario,
   getLimitSkip,
   getFiltered,
   getFilteredLimitSkip,

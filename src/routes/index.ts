@@ -1,16 +1,15 @@
 import { Router } from 'express';
-//import jetValidator from 'jet-validator';
 import Paths from '../common/Paths';
 import UsuarioRoutes from './UsuarioRoutes';
 import ChatRoutes from './ChatRoutes';
 import PropiedadRoutes from './PropiedadRoutes';
 import AuthRoutes from './AuthRoutes';
+import {verificarToken} from '@src/middleware/verificarToken';
 
 
 // **** Variables **** //
 
-const apiRouter = Router();//,
-//  validate = jetValidator();
+const apiRouter = Router();
 
 
 // ** Add UserRouter ** //
@@ -29,12 +28,14 @@ authRouter.post(
 // Get all users
 usuarioRouter.get(
   Paths.Usuario.Get,
+  verificarToken,
   UsuarioRoutes.getAll,
 );
 
 // Get one users
 usuarioRouter.get(
   Paths.Usuario.GetOne,
+  verificarToken,
   UsuarioRoutes.getOne,
 );
 
@@ -47,45 +48,49 @@ usuarioRouter.post(
 // Update one user
 usuarioRouter.put(
   Paths.Usuario.Update,
+  verificarToken,
   UsuarioRoutes.update,
 );
 
 // Delete one user
 usuarioRouter.delete(
   Paths.Usuario.Delete,
+  verificarToken,
   UsuarioRoutes.delete,
 );
 
 // Get all users
 chatRouter.get(
   Paths.Chat.Get,
+  verificarToken,
   ChatRoutes.getAll,
 );
 
 // Get one users
 chatRouter.get(
   Paths.Chat.GetOne,
+  verificarToken,
   ChatRoutes.getOne,
 );
 
 // Add one user
 chatRouter.post(
   Paths.Chat.Add,
-  //validate(['chat', Chat.isChat]),
+  verificarToken,
   ChatRoutes.add,
 );
 
 // Update one user
 chatRouter.put(
   Paths.Chat.Update,
-  //validate(['chat', Chat.isChat]),
+  verificarToken,
   ChatRoutes.update,
 );
 
 // Delete one user
 chatRouter.delete(
   Paths.Chat.Delete,
-  //validate(['id', 'number', 'params']),
+  verificarToken,
   ChatRoutes.delete,
 );
 
@@ -93,6 +98,13 @@ chatRouter.delete(
 propiedadRouter.get(
   Paths.Propiedad.Get,
   PropiedadRoutes.getAll,
+);
+
+// get de todas las propiedades de x usuario.
+propiedadRouter.get(
+  Paths.Propiedad.GetUsuario,
+  verificarToken,
+  PropiedadRoutes.getUsuario,
 );
 
 // Get all users
@@ -122,20 +134,21 @@ propiedadRouter.get(
 // Add one user
 propiedadRouter.post(
   Paths.Propiedad.Add,
+  verificarToken,
   PropiedadRoutes.add,
 );
 
 // Update one user
 propiedadRouter.put(
   Paths.Propiedad.Update,
-  //validate(['propiedad', Propiedad.isPropiedad]),
+  verificarToken,
   PropiedadRoutes.update,
 );
 
 // Delete one user
 propiedadRouter.delete(
   Paths.Propiedad.Delete,
-  //validate(['id', 'number', 'params']),
+  verificarToken,
   PropiedadRoutes.delete,
 );
 

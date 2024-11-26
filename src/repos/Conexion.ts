@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import schemas from './schemas';
 
-const DB_URL: string = 'mongodb://localhost:27017/Pernado';
-
-mongoose.connect(process.env.DATABASE || DB_URL);
+mongoose.connect(process.env.DATABASE as string);
 
 export const Usuario = mongoose.model('Usuario', schemas.usuarioSchema);
 export const Chat = mongoose.model('Chat', schemas.chatSchema);
