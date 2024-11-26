@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 import { Request as IReq, Response as IRes, NextFunction as INext } from 'express';
 
 
@@ -15,7 +15,7 @@ export const authenticateToken = (req: IReq, res:IRes, next: INext) => {
 
   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.TOKEN_SECRET || 'prusci', (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
     if (err) return res.sendStatus(403).json(err);
     if (user) {
       (req as CustomRequest).payload = user as Payload;

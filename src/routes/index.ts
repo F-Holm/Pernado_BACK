@@ -95,6 +95,12 @@ propiedadRouter.get(
   PropiedadRoutes.getAll,
 );
 
+// get de todas las propiedades de x usuario.
+propiedadRouter.get(
+  Paths.Propiedad.GetUsuario,
+  PropiedadRoutes.getUsuario,
+);
+
 // Get all users
 propiedadRouter.get(
   Paths.Propiedad.GetLimitSkip,

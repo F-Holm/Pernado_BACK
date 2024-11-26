@@ -3,9 +3,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import PropiedadService from '@src/services/PropiedadService';
 import { IPropiedad } from '@src/models/Propiedad';
 import { IReq, IRes } from './types/express/misc';
-import FiltrosPropiedad, {
-  IFiltrosPropiedad,
-} from '@src/models/FiltrosPropiedad';
+import {IFiltrosPropiedad} from '@src/models/FiltrosPropiedad';
 
 
 // **** Functions **** //
@@ -15,6 +13,15 @@ import FiltrosPropiedad, {
  */
 async function getAll(_: IReq, res: IRes) {
   const propiedades = await PropiedadService.getAll();
+  return res.status(HttpStatusCodes.OK).json({ propiedades });
+}
+
+/**
+ * get de todas las propiedades de x usuario.
+ */
+async function getUsuario(req: IReq, res: IRes) {
+  const idUsuario =+req.params.id;
+  const propiedades = await PropiedadService.getUsuario(idUsuario);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
@@ -89,6 +96,7 @@ export default {
   getAll,
   add,
   getOne,
+  getUsuario,
   getLimitSkip,
   getFiltered,
   getFilteredLimitSkip,
