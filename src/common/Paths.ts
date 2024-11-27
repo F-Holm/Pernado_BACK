@@ -9,6 +9,7 @@ export default {
     Base: '/usuario',
     Get: '/',
     GetOne: '/:id',
+    GetOneByToken: '/token/',
     Add: '/',
     Update: '/',
     Delete: '/:id',

@@ -40,6 +40,13 @@ usuarioRouter.get(
   UsuarioRoutes.getOne,
 );
 
+// Get one users
+usuarioRouter.get(
+  Paths.Usuario.GetOneByToken,
+  verificarToken,
+  UsuarioRoutes.getOneByToken,
+);
+
 // Add one user
 usuarioRouter.post(
   Paths.Usuario.Add,
