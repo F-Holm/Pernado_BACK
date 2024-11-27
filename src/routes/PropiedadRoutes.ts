@@ -41,7 +41,7 @@ async function getUsuario(req: IReq, res: IRes) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
-  const propiedades = await PropiedadService.getUsuario(idUsuario);
+  const propiedades: IPropiedad[] = await PropiedadService.getUsuario(idUsuario);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 

@@ -18,7 +18,7 @@ async function getAll(req: IReq, res: IRes) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
-  const usuarios = await UsuarioService.getAll();
+  const usuarios: IUsuario[] = await UsuarioService.getAll();
   return res.status(HttpStatusCodes.OK).json({ usuarios });
 }
 
@@ -35,8 +35,17 @@ async function getOne(req: IReq, res: IRes) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
-  const usuario =   await UsuarioService.getOne(id);
+  const usuario: IUsuario = await UsuarioService.getOne(id);
   return res.status(HttpStatusCodes.OK).json({ usuario });
+}
+
+async function getNombreUsuario(req: IReq, res: IRes) {
+  const id: number = +req.params.id;
+
+  const usuario: IUsuario = await UsuarioService.getOne(id);
+  const nombreUsuario: string = usuario.nombreUsuario;
+  return res.status(HttpStatusCodes.OK).json({ nombreUsuario });
+
 }
 
 /**
@@ -99,6 +108,7 @@ async function delete_(req: IReq, res: IRes) {
 export default {
   getAll,
   getOne,
+  getNombreUsuario,
   add,
   update,
   getOneByToken,

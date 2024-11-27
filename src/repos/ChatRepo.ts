@@ -1,6 +1,7 @@
 import { getRandomInt } from '@src/util/misc';
 import { IChat } from '@src/models/Chat';
 import { Chat } from './Conexion';
+import {IMensaje} from '@src/models/Mensaje';
 
 // **** Functions **** //
 
@@ -28,6 +29,10 @@ async function getMyChats(idMiembro: number): Promise<IChat[]> {
       { vendedor: idMiembro },
     ],
   }));
+}
+
+async function addMensaje(id: number, mensaje: IMensaje): Promise<void> {
+  await Chat.updateOne( { id: id }, { $push: { mensajes: mensaje } } );
 }
 
 /**
@@ -69,6 +74,7 @@ export default {
   persists,
   getAll,
   add,
+  addMensaje,
   getMyChats,
   update,
   delete: delete_,
