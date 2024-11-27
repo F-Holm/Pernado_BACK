@@ -56,7 +56,7 @@ async function add(chat: IChat): Promise<void> {
  * Update a user.
  */
 async function update(chat: IChat): Promise<void> {
-  await Chat.findOneAndUpdate({ id: chat.id }, new Chat(chat), { new: true });
+  await Chat.findOneAndUpdate({ id: chat.id }, chat, { new: true });
 }
 
 /**
