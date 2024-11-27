@@ -45,7 +45,7 @@ async function getUsuario(idUsuario: number): Promise<IPropiedad[]> {
  * Get some users.
  */
 async function getLimitSkip(limit: number, skip: number): Promise<IPropiedad[]> {
-  return (await Propiedad.find({}).skip(skip).limit(limit).lean());
+  return (await Propiedad.find({}).skip(skip).limit(limit).lean() as IPropiedad[]);
 }
 
 /**
@@ -74,12 +74,12 @@ async function delete_(id: number): Promise<void> {
 
 async function getFiltered(filtros: IFiltrosPropiedad): Promise<IPropiedad[]> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return (await Propiedad.find(filteredQuery(filtros)).lean());
+  return (await Propiedad.find(filteredQuery(filtros)).lean() as IPropiedad[]);
 }
 
 async function getFilteredLimitSkip(filtros: IFiltrosPropiedad, limit: number, skip: number): Promise<IPropiedad[]> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return (await Propiedad.find(filteredQuery(filtros)).skip(skip).limit(limit).lean());
+  return (await Propiedad.find(filteredQuery(filtros)).skip(skip).limit(limit).lean() as IPropiedad[]);
 }
 
 function filteredQuery(filtros: IFiltrosPropiedad): any{
