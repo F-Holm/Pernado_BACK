@@ -4,7 +4,6 @@
 
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import path from 'path';
 import helmet from 'helmet';
 import express, { Request, Response, NextFunction } from 'express';
 import logger from 'jet-logger';
@@ -20,6 +19,7 @@ import RouteError from '@src/common/RouteError';
 import { NodeEnvs } from '@src/common/misc';
 
 import cors from 'cors';
+import path from 'path';
 
 
 // **** Variables **** //
@@ -28,6 +28,9 @@ const app = express();
 
 
 // **** Setup **** //
+
+// Middleware para servir archivos estáticos
+app.use('/api/img/', express.static(path.join(__dirname, '../imagenes')));
 
 // Basic middleware
 app.use(express.json());
@@ -65,28 +68,6 @@ app.use((
   }
   return res.status(status).json({ error: err.message });
 });
-
-
-// **** Front-End Content **** //
-
-// Set views directory (html)
-const viewsDir = path.join(__dirname, 'views');
-app.set('views', viewsDir);
-
-// Set static directory (js and css).
-const staticDir = path.join(__dirname, 'public');
-app.use(express.static(staticDir));
-
-// Nav to users pg by default
-app.get('/', (_: Request, res: Response) => {
-  return res.redirect('/users');
-});
-
-// Redirect to login if not logged in.
-app.get('/users', (_: Request, res: Response) => {
-  return res.sendFile('users.html', { root: viewsDir });
-});
-
 
 // **** Export default **** //
 

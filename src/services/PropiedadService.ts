@@ -23,6 +23,20 @@ async function getAll(): Promise<IPropiedad[]> {
 /**
  * Get all users.
  */
+async function getCant(): Promise<number> {
+  return await PropiedadRepo.getCant();
+}
+
+/**
+ * get de todas las propiedades de x usuario.
+ */
+async function getUsuario(idUsuario: number): Promise<IPropiedad[]> {
+  return await PropiedadRepo.getUsuario(idUsuario);
+}
+
+/**
+ * Get all users.
+ */
 async function getLimitSkip(limit: number, skip: number): Promise<IPropiedad[]> {
   return await PropiedadRepo.getLimitSkip(limit, skip);
 }
@@ -102,7 +116,9 @@ async function _delete(id: number): Promise<void> {
 
 export default {
   getAll,
+  getUsuario,
   getOne,
+  getCant,
   getLimitSkip,
   getFiltered,
   getFilteredLimitSkip,

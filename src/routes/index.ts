@@ -1,24 +1,24 @@
 import { Router } from 'express';
-//import jetValidator from 'jet-validator';
 import Paths from '../common/Paths';
 import UsuarioRoutes from './UsuarioRoutes';
 import ChatRoutes from './ChatRoutes';
 import PropiedadRoutes from './PropiedadRoutes';
 import AuthRoutes from './AuthRoutes';
+import {verificarToken} from '@src/middleware/verificarToken';
+import upload from '@src/middleware/multerImages';
 
 
 // **** Variables **** //
 
-const apiRouter = Router();//,
-//  validate = jetValidator();
+const apiRouter = Router();
 
 
 // ** Add UserRouter ** //
 
-const usuarioRouter = Router();
-const chatRouter = Router();
-const propiedadRouter = Router();
-const authRouter = Router();
+const usuarioRouter: Router = Router();
+const chatRouter: Router = Router();
+const propiedadRouter: Router = Router();
+const authRouter: Router = Router();
 
 // Auth
 authRouter.post(
@@ -26,16 +26,31 @@ authRouter.post(
   AuthRoutes.login,
 );
 
-// Get all users
+// Get one user
 usuarioRouter.get(
-  Paths.Usuario.Get,
-  UsuarioRoutes.getAll,
+  Paths.Usuario.GetOneByToken,
+  verificarToken,
+  UsuarioRoutes.getOneByToken,
 );
 
 // Get one users
 usuarioRouter.get(
   Paths.Usuario.GetOne,
+  verificarToken,
   UsuarioRoutes.getOne,
+);
+
+// Get one users
+usuarioRouter.get(
+  Paths.Usuario.GetNombreUsuario,
+  UsuarioRoutes.getNombreUsuario,
+);
+
+// Get all users
+usuarioRouter.get(
+  Paths.Usuario.Get,
+  verificarToken,
+  UsuarioRoutes.getAll,
 );
 
 // Add one user
@@ -47,45 +62,70 @@ usuarioRouter.post(
 // Update one user
 usuarioRouter.put(
   Paths.Usuario.Update,
+  verificarToken,
   UsuarioRoutes.update,
 );
 
 // Delete one user
 usuarioRouter.delete(
   Paths.Usuario.Delete,
+  verificarToken,
   UsuarioRoutes.delete,
 );
 
 // Get all users
 chatRouter.get(
   Paths.Chat.Get,
+  verificarToken,
   ChatRoutes.getAll,
+);
+
+// Get all users
+chatRouter.get(
+  Paths.Chat.GetMyChatsToken,
+  verificarToken,
+  ChatRoutes.getMyChatsToken,
 );
 
 // Get one users
 chatRouter.get(
   Paths.Chat.GetOne,
+  verificarToken,
   ChatRoutes.getOne,
+);
+
+// Get all users
+chatRouter.get(
+  Paths.Chat.GetMyChats,
+  verificarToken,
+  ChatRoutes.getMyChats,
 );
 
 // Add one user
 chatRouter.post(
   Paths.Chat.Add,
-  //validate(['chat', Chat.isChat]),
+  verificarToken,
   ChatRoutes.add,
+);
+
+// Add one user
+chatRouter.post(
+  Paths.Chat.AddMensaje,
+  verificarToken,
+  ChatRoutes.addMensaje,
 );
 
 // Update one user
 chatRouter.put(
   Paths.Chat.Update,
-  //validate(['chat', Chat.isChat]),
+  verificarToken,
   ChatRoutes.update,
 );
 
 // Delete one user
 chatRouter.delete(
   Paths.Chat.Delete,
-  //validate(['id', 'number', 'params']),
+  verificarToken,
   ChatRoutes.delete,
 );
 
@@ -95,10 +135,23 @@ propiedadRouter.get(
   PropiedadRoutes.getAll,
 );
 
+// get de todas las propiedades de x usuario.
+propiedadRouter.get(
+  Paths.Propiedad.GetUsuario,
+  verificarToken,
+  PropiedadRoutes.getUsuario,
+);
+
 // Get all users
 propiedadRouter.get(
   Paths.Propiedad.GetLimitSkip,
   PropiedadRoutes.getLimitSkip,
+);
+
+// Get all users
+propiedadRouter.get(
+  Paths.Propiedad.GetCant,
+  PropiedadRoutes.getCant,
 );
 
 // Get all users
@@ -122,20 +175,30 @@ propiedadRouter.get(
 // Add one user
 propiedadRouter.post(
   Paths.Propiedad.Add,
+  verificarToken,
+  upload.array('img', 100),
   PropiedadRoutes.add,
 );
 
 // Update one user
 propiedadRouter.put(
   Paths.Propiedad.Update,
-  //validate(['propiedad', Propiedad.isPropiedad]),
+  verificarToken,
   PropiedadRoutes.update,
+);
+
+// Update one user
+propiedadRouter.post(
+  Paths.Propiedad.Img,
+  verificarToken,
+  upload.array('img', 100),
+  PropiedadRoutes.postImg,
 );
 
 // Delete one user
 propiedadRouter.delete(
   Paths.Propiedad.Delete,
-  //validate(['id', 'number', 'params']),
+  verificarToken,
   PropiedadRoutes.delete,
 );
 
