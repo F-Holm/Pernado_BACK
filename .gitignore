@@ -51,4 +51,4 @@ imagenes/
 
 #.env
 *.env
-!./env/test.env
+!env/test.env
