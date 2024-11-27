@@ -51,3 +51,4 @@ imagenes/
 
 #.env
 *.env
+!./env/test.env
