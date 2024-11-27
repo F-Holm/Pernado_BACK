@@ -118,6 +118,10 @@ async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
+  for (const imagen of (await PropiedadService.getOne(id_token)).imagenes) {
+    if (!propiedad.imagenes.includes(imagen)) ImagenesRepo.eliminarImagen(imagen);
+  }
+
   await PropiedadService.updateOne(propiedad);
   return res.status(HttpStatusCodes.OK).end();
 }
