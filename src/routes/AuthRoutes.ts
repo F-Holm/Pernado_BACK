@@ -2,6 +2,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { IReq, IRes } from './types/express/misc';
 import AuthService from '@src/services/AuthService';
 
+// eslint-disable-next-line max-len
 async function login(IReq : IReq<{email: string, contrasenia:string}>, IRes : IRes) {
   const { email, contrasenia } = IReq.body;
   try {

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { TipoPropiedad } from './TipoPropiedad';
 import Caracteristicas, { ICaracteristicas } from './Caracteristicas';
 import Direccion, {IDireccion} from '@src/models/Direccion';

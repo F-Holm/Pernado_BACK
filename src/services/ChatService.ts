@@ -3,6 +3,8 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import ChatRepo from '@src/repos/ChatRepo';
 import { IChat } from '@src/models/Chat';
+import {IMensaje} from '@src/models/Mensaje';
+import PropiedadRepo from '@src/repos/PropiedadRepo';
 
 
 // **** Variables **** //
@@ -17,6 +19,14 @@ export const CHAT_NOT_FOUND_ERR = 'Chat no encontrado';
  */
 async function getAll(): Promise<IChat[]> {
   return await ChatRepo.getAll();
+}
+
+async function getMyChats(idMiembro: number): Promise<IChat[]> {
+  return await ChatRepo.getMyChats(idMiembro);
+}
+
+async function addMensaje(id: number, mensaje: IMensaje): Promise<void> {
+  return await ChatRepo.addMensaje(id, mensaje);
 }
 
 /**
@@ -67,7 +77,9 @@ async function _delete(id: number): Promise<void> {
 export default {
   getAll,
   getOne,
+  getMyChats,
   addOne,
+  addMensaje,
   updateOne,
   delete: _delete,
 } as const;

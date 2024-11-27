@@ -35,6 +35,10 @@ function new_(
   };
 }
 
+function isMiembro(chat: IChat, id: number){
+  return chat.vendedor == id || chat.comprador == id;
+}
+
 /**
  * Get user instance from object.
  */
@@ -66,5 +70,6 @@ function isChat(arg: unknown): boolean {
 export default {
   new: new_,
   from,
+  isMiembro,
   isChat,
 } as const;
