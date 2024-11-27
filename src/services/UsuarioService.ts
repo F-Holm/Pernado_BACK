@@ -43,12 +43,14 @@ async function addOne(usuario: IUsuario): Promise<void> {
  * Update one user.
  */
 async function updateOne(usuario: IUsuario): Promise<void> {
+  console.log('update3');
   if (!await UsuarioRepo.persists(usuario.id)) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
       USUARIO_NOT_FOUND_ERR,
     );
   }
+  console.log('update4');
   return await UsuarioRepo.update(usuario);
 }
 
