@@ -40,6 +40,17 @@ async function getOne(req: IReq, res: IRes) {
 }
 
 /**
+ * Get one user.
+ */
+async function getOneByToken(req: IReq, res: IRes) {
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  const usuario: IUsuario =   await UsuarioService.getOne(id);
+  return res.status(HttpStatusCodes.OK).json({ usuario });
+}
+
+/**
  * Add one user.
  */
 async function add(req: IReq<{usuario: IUsuario}>, res: IRes) {
@@ -90,5 +101,6 @@ export default {
   getOne,
   add,
   update,
+  getOneByToken,
   delete: delete_,
 } as const;
