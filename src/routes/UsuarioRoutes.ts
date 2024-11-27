@@ -72,15 +72,16 @@ async function add(req: IReq<{usuario: IUsuario}>, res: IRes) {
  * Update one user.
  */
 async function update(req: IReq<{usuario: IUsuario}>, res: IRes) {
+console.log('update');
   const { usuario } = req.body;
-
+  console.log(usuario);
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
   if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && usuario.id != id_token) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
-
+  console.log('update2');
   await UsuarioService.updateOne(usuario);
   return res.status(HttpStatusCodes.OK).end();
 }

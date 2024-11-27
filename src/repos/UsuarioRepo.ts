@@ -2,6 +2,7 @@ import { IUsuario } from '@src/models/Usuario';
 import { getRandomInt } from '@src/util/misc';
 import { Usuario } from './Conexion';
 import bcrypt from 'bcrypt';
+import { get } from 'http';
 
 // **** Functions **** //
 
@@ -56,9 +57,12 @@ async function add(usuario: IUsuario): Promise<void> {
  * Update a user.
  */
 async function update(usuario: IUsuario): Promise<void> {
-  do{
+  if(usuario.contrasenia == ''){
+    usuario.contrasenia = (await getOne(usuario.id))!.contrasenia;
+  }else{
     usuario.contrasenia = await bcrypt.hash(usuario.contrasenia, 10);
-  }while(await persists(usuario.id));
+  }
+  
   await Usuario.findOneAndUpdate({ id: usuario.id }, new Usuario(usuario), { new: true });
 }
 
