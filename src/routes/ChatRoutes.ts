@@ -6,6 +6,7 @@ import Chat, { IChat } from '@src/models/Chat';
 import { IReq, IRes } from './types/express/misc';
 import UsuarioService from '@src/services/UsuarioService';
 import Usuario from '@src/models/Usuario';
+import {IMensaje} from '@src/models/Mensaje';
 
 // **** Functions **** //
 
@@ -38,6 +39,17 @@ async function getMyChats(req: IReq, res: IRes) {
   }
 
   const chats: IChat[] = await ChatService.getMyChats(idMiembro);
+  return res.status(HttpStatusCodes.OK).json({ chats });
+}
+
+/**
+ * Get all users.
+ */
+async function getMyChatsToken(req: IReq, res: IRes) {
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  const chats: IChat[] = await ChatService.getMyChats(id);
   return res.status(HttpStatusCodes.OK).json({ chats });
 }
 
@@ -93,6 +105,19 @@ async function update(req: IReq<{chat: IChat}>, res: IRes) {
   return res.status(HttpStatusCodes.OK).end();
 }
 
+async function addMensaje(req: IReq<{id: number, mensaje: IMensaje}>, res: IRes) {
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && !Chat.isMiembro(await ChatService.getOne(id_token), id_token)) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED);
+  }
+
+  const { id, mensaje } = req.body;
+  await ChatService.addMensaje(id, mensaje);
+  return res.status(HttpStatusCodes.OK).end();
+}
+
 /**
  * Delete one user.
  */
@@ -116,6 +141,8 @@ export default {
   getAll,
   add,
   getMyChats,
+  getMyChatsToken,
+  addMensaje,
   getOne,
   update,
   delete: delete_,

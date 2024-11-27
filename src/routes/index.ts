@@ -26,11 +26,11 @@ authRouter.post(
   AuthRoutes.login,
 );
 
-// Get all users
+// Get one user
 usuarioRouter.get(
-  Paths.Usuario.Get,
+  Paths.Usuario.GetOneByToken,
   verificarToken,
-  UsuarioRoutes.getAll,
+  UsuarioRoutes.getOneByToken,
 );
 
 // Get one users
@@ -42,9 +42,15 @@ usuarioRouter.get(
 
 // Get one users
 usuarioRouter.get(
-  Paths.Usuario.GetOneByToken,
+  Paths.Usuario.GetNombreUsuario,
+  UsuarioRoutes.getNombreUsuario,
+);
+
+// Get all users
+usuarioRouter.get(
+  Paths.Usuario.Get,
   verificarToken,
-  UsuarioRoutes.getOneByToken,
+  UsuarioRoutes.getAll,
 );
 
 // Add one user
@@ -76,9 +82,9 @@ chatRouter.get(
 
 // Get all users
 chatRouter.get(
-  Paths.Chat.GetMyChats,
+  Paths.Chat.GetMyChatsToken,
   verificarToken,
-  ChatRoutes.getMyChats,
+  ChatRoutes.getMyChatsToken,
 );
 
 // Get one users
@@ -88,11 +94,25 @@ chatRouter.get(
   ChatRoutes.getOne,
 );
 
+// Get all users
+chatRouter.get(
+  Paths.Chat.GetMyChats,
+  verificarToken,
+  ChatRoutes.getMyChats,
+);
+
 // Add one user
 chatRouter.post(
   Paths.Chat.Add,
   verificarToken,
   ChatRoutes.add,
+);
+
+// Add one user
+chatRouter.post(
+  Paths.Chat.AddMensaje,
+  verificarToken,
+  ChatRoutes.addMensaje,
 );
 
 // Update one user
