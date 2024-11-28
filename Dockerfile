@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN mkdir -p /app/env && echo "$PRODUCTION" > /app/env/production.env
+#RUN mkdir -p /app/env && echo "$PRODUCTION" > /app/env/production.env
 
 COPY . .
 

@@ -120,7 +120,7 @@ async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
   }
 
 
-  for (const imagen of (await PropiedadService.getOne(id_token)).imagenes) {
+  for (const imagen of (await PropiedadService.getOne(propiedad.duenio)).imagenes) {
     if (!propiedad.imagenes.includes(imagen)) ImagenesRepo.eliminarImagen(imagen);
   }
 
