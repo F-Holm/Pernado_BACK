@@ -62,7 +62,7 @@ async function add(propiedad: IPropiedad): Promise<void> {
  * Update a user.
  */
 async function update(propiedad: IPropiedad): Promise<void> {
-  await Propiedad.findOneAndUpdate({ id: propiedad.id }, new Propiedad(propiedad), { new: true });
+  await Propiedad.findOneAndUpdate({ id: propiedad.id }, propiedad, { new: true });
 }
 
 /**

@@ -63,7 +63,7 @@ async function update(usuario: IUsuario): Promise<void> {
     usuario.contrasenia = await bcrypt.hash(usuario.contrasenia, 10);
   }
   
-  await Usuario.findOneAndUpdate({ id: usuario.id }, new Usuario(usuario), { new: true });
+  await Usuario.findOneAndUpdate({ id: usuario.id },  usuario, { new: true });
 }
 
 /**
