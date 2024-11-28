@@ -95,7 +95,7 @@ async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
   if (!Usuario.isAdmin(await UsuarioService.getOne(id_token))) {
     propiedad.duenio = id_token;
   }
-
+  console.log(propiedad.ubicacion.direccion);
   await PropiedadService.addOne(propiedad);
   return res.status(HttpStatusCodes.CREATED).end();
 }
@@ -108,14 +108,17 @@ function postImg(req: IReq, res: IRes) {
  * Update one user.
  */
 async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
+  console.log('update1');
   const { propiedad } = req.body;
-
+  console.log(propiedad);
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
   if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && propiedad.duenio != id_token) {
+    console.log("update2");
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
+
 
   for (const imagen of (await PropiedadService.getOne(id_token)).imagenes) {
     if (!propiedad.imagenes.includes(imagen)) ImagenesRepo.eliminarImagen(imagen);
