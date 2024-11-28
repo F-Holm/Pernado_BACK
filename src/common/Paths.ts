@@ -27,6 +27,7 @@ export default {
     GetMyChatsToken: '/mychats',
     Add: '/',
     AddMensaje: '/mensaje',
+    TengoChat: '/tengo/:id',
     Update: '/',
     Delete: '/:id',
   },

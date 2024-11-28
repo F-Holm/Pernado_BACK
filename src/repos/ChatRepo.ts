@@ -13,6 +13,24 @@ async function getOne(id: number): Promise<IChat | null> {
 }
 
 /**
+ * Get one user.
+ */
+async function tengoChat(id1: number, id2: number): Promise<boolean> {
+  let chat: IChat | undefined | null = null;
+  try {
+    chat = (await Chat.findOne({
+      $or: [
+        { vendedor: id1, comprador: id2 },
+        { vendedor: id2, comprador: id1 },
+      ],
+    }));
+  } catch (e) {
+    return false;
+  }
+  return chat !== undefined && chat !== null;
+}
+
+/**
  * See if a user with the given id exists.
  */
 async function persists(id: number): Promise<boolean> {
@@ -75,6 +93,7 @@ export default {
   getAll,
   add,
   addMensaje,
+  tengoChat,
   getMyChats,
   update,
   delete: delete_,

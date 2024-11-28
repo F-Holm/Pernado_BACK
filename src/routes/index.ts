@@ -82,6 +82,13 @@ chatRouter.get(
 
 // Get all users
 chatRouter.get(
+  Paths.Chat.TengoChat,
+  verificarToken,
+  ChatRoutes.tengoChat,
+);
+
+// Get all users
+chatRouter.get(
   Paths.Chat.GetMyChatsToken,
   verificarToken,
   ChatRoutes.getMyChatsToken,
