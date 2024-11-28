@@ -3,12 +3,11 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import PropiedadRepo from '@src/repos/PropiedadRepo';
 import { IPropiedad } from '@src/models/Propiedad';
-import {IFiltrosPropiedad} from '@src/models/FiltrosPropiedad';
 
 
 // **** Variables **** //
 
-export const PROPIEDAD_NOT_FOUND_ERR = 'Pripiedad no encontrada';
+export const PROPIEDAD_NOT_FOUND_ERR = 'Propiedad no encontrada';
 
 
 // **** Functions **** //
@@ -44,28 +43,28 @@ async function getLimitSkip(limit: number, skip: number): Promise<IPropiedad[]> 
 /**
  * Get all users.
  */
-async function getFiltered(filtro: IFiltrosPropiedad): Promise<IPropiedad[]> {
-  const respuesta = await PropiedadRepo.getFiltered(filtro);
-  if (respuesta.length === 0) {
+async function getFiltered(query: any): Promise<IPropiedad[]> {
+  const respuesta: IPropiedad[] = await PropiedadRepo.getFiltered(query);
+  /*if (respuesta.length === 0) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
       PROPIEDAD_NOT_FOUND_ERR,
     );
-  }
+  }*/
   return respuesta;
 }
 
 /**
  * Get all users.
  */
-async function getFilteredLimitSkip(filtro: IFiltrosPropiedad, limit: number, skip: number): Promise<IPropiedad[]> {
-  const respuesta = await PropiedadRepo.getFilteredLimitSkip(filtro, limit, skip);
-  if (respuesta.length === 0) {
+async function getFilteredLimitSkip(query: any, limit: number, skip: number): Promise<IPropiedad[]> {
+  const respuesta: IPropiedad[] = await PropiedadRepo.getFilteredLimitSkip(query, limit, skip);
+  /*if (respuesta.length === 0) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
       PROPIEDAD_NOT_FOUND_ERR,
     );
-  }
+  }*/
   return respuesta;
 }
 

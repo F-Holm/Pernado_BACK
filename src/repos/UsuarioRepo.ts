@@ -56,10 +56,13 @@ async function add(usuario: IUsuario): Promise<void> {
  * Update a user.
  */
 async function update(usuario: IUsuario): Promise<void> {
-  do{
+  if(usuario.contrasenia == ''){
+    usuario.contrasenia = (await getOne(usuario.id))!.contrasenia;
+  }else{
     usuario.contrasenia = await bcrypt.hash(usuario.contrasenia, 10);
-  }while(await persists(usuario.id));
-  await Usuario.findOneAndUpdate({ id: usuario.id }, new Usuario(usuario), { new: true });
+  }
+
+  await Usuario.findOneAndUpdate({ id: usuario.id }, usuario, { new: true });
 }
 
 /**
