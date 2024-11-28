@@ -50,5 +50,4 @@ Thumbs.db
 imagenes/
 
 #.env
-*.env
-!env/test.env
+/env/production.env
