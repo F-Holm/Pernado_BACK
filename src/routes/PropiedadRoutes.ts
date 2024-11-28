@@ -7,6 +7,7 @@ import { IReq, IRes } from './types/express/misc';
 import Usuario from '@src/models/Usuario';
 import UsuarioService from '@src/services/UsuarioService';
 import ImagenesRepo from '@src/repos/ImagenesRepo';
+import Pregunta, {IPregunta} from '@src/models/Pregunta';
 
 
 // **** Functions **** //
@@ -41,6 +42,17 @@ async function getUsuario(req: IReq, res: IRes) {
   }
 
   const propiedades: IPropiedad[] = await PropiedadService.getUsuario(idUsuario);
+  return res.status(HttpStatusCodes.OK).json({ propiedades });
+}
+
+/**
+ * get de todas las propiedades de x usuario.
+ */
+async function getUsuarioToken(req: IReq, res: IRes) {
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  const propiedades: IPropiedad[] = await PropiedadService.getUsuario(id);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
@@ -95,8 +107,26 @@ async function add(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
   if (!Usuario.isAdmin(await UsuarioService.getOne(id_token))) {
     propiedad.duenio = id_token;
   }
-  console.log(propiedad.ubicacion.direccion);
+
   await PropiedadService.addOne(propiedad);
+  return res.status(HttpStatusCodes.CREATED).end();
+}
+
+/**
+ * Add one user.
+ */
+async function postPreguntar(req: IReq<{ pregunta: string, idPropiedad: number }>, res: IRes) {
+  const { pregunta, idPropiedad } = req.body;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  const pregunta_: IPregunta = Pregunta.new(pregunta, '', id);
+
+
+  const propiedad: IPropiedad = await PropiedadService.getOne(idPropiedad);
+  propiedad.preguntas.push(pregunta_);
+  PropiedadService.updateOne(propiedad);
   return res.status(HttpStatusCodes.CREATED).end();
 }
 
@@ -108,19 +138,16 @@ function postImg(req: IReq, res: IRes) {
  * Update one user.
  */
 async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
-  console.log('update1');
   const { propiedad } = req.body;
-  console.log(propiedad);
+
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
   if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && propiedad.duenio != id_token) {
-    console.log("update2");
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
-
-  for (const imagen of (await PropiedadService.getOne(propiedad.duenio)).imagenes) {
+  for (const imagen of (await PropiedadService.getOne(propiedad.id)).imagenes) {
     if (!propiedad.imagenes.includes(imagen)) ImagenesRepo.eliminarImagen(imagen);
   }
 
@@ -132,7 +159,7 @@ async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
  * Delete one user.
  */
 async function delete_(req: IReq, res: IRes) {
-  const id = +req.params.id;
+  const id: number = +req.params.id;
 
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
@@ -158,8 +185,10 @@ export default {
   getOne,
   getCant,
   getUsuario,
+  getUsuarioToken,
   getLimitSkip,
   getFiltered,
+  postPreguntar,
   postImg,
   getFilteredLimitSkip,
   update,

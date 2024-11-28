@@ -44,6 +44,13 @@ async function getOne(id: number): Promise<IChat> {
 }
 
 /**
+ * Get one users.
+ */
+async function tengoChat(id1: number, id2: number): Promise<boolean> {
+  return await ChatRepo.tengoChat(id1, id2);
+}
+
+/**
  * Add one user.
  */
 async function addOne(chat: IChat): Promise<void> {
@@ -80,6 +87,7 @@ export default {
   getMyChats,
   addOne,
   addMensaje,
+  tengoChat,
   updateOne,
   delete: _delete,
 } as const;
