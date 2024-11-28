@@ -4,7 +4,6 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import PropiedadService from '@src/services/PropiedadService';
 import { IPropiedad } from '@src/models/Propiedad';
 import { IReq, IRes } from './types/express/misc';
-import {IFiltrosPropiedad} from '@src/models/FiltrosPropiedad';
 import Usuario from '@src/models/Usuario';
 import UsuarioService from '@src/services/UsuarioService';
 import ImagenesRepo from '@src/repos/ImagenesRepo';
@@ -16,7 +15,7 @@ import ImagenesRepo from '@src/repos/ImagenesRepo';
  * Get all users.
  */
 async function getAll(_: IReq, res: IRes) {
-  const propiedades = await PropiedadService.getAll();
+  const propiedades: IPropiedad[] = await PropiedadService.getAll();
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
@@ -58,20 +57,20 @@ async function getLimitSkip(req: IReq, res: IRes) {
 /**
  * Get one user.
  */
-async function getFiltered(req: IReq, res: IRes) {
-  const filtrosPropiedad: IFiltrosPropiedad = JSON.parse(req.params.filtro) as IFiltrosPropiedad;
-  const propiedades: IPropiedad[] = await PropiedadService.getFiltered(filtrosPropiedad);
+async function getFiltered(req: IReq<{ query: any }>, res: IRes) {
+  const { query } = req.body;
+
+  const propiedades: IPropiedad[] = await PropiedadService.getFiltered(query);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
 /**
  * Get one user.
  */
-async function getFilteredLimitSkip(req: IReq, res: IRes) {
-  const filtrosPropiedad: IFiltrosPropiedad = JSON.parse(req.params.filtro) as IFiltrosPropiedad;
-  const limit: number = +req.params.limit;
-  const skip: number = +req.params.skip;
-  const propiedades: IPropiedad[] = await PropiedadService.getFilteredLimitSkip(filtrosPropiedad, limit, skip);
+async function getFilteredLimitSkip(req: IReq<{ query: any, limit: number, skip: number }>, res: IRes) {
+  const { query, limit, skip } = req.body;
+
+  const propiedades: IPropiedad[] = await PropiedadService.getFilteredLimitSkip(query, limit, skip);
   return res.status(HttpStatusCodes.OK).json({ propiedades });
 }
 
@@ -119,7 +118,12 @@ async function update(req: IReq<{propiedad: IPropiedad}>, res: IRes) {
     console.log("update2");
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
-  console.log("update");
+
+
+  for (const imagen of (await PropiedadService.getOne(id_token)).imagenes) {
+    if (!propiedad.imagenes.includes(imagen)) ImagenesRepo.eliminarImagen(imagen);
+  }
+
   await PropiedadService.updateOne(propiedad);
   return res.status(HttpStatusCodes.OK).end();
 }

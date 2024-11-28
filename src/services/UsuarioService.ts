@@ -43,7 +43,6 @@ async function addOne(usuario: IUsuario): Promise<void> {
  * Update one user.
  */
 async function updateOne(usuario: IUsuario): Promise<void> {
-  
   if (!await UsuarioRepo.persists(usuario.id)) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,

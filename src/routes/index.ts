@@ -155,13 +155,13 @@ propiedadRouter.get(
 );
 
 // Get all users
-propiedadRouter.get(
+propiedadRouter.post(
   Paths.Propiedad.GetFiltered,
   PropiedadRoutes.getFiltered,
 );
 
 // Get all users
-propiedadRouter.get(
+propiedadRouter.post(
   Paths.Propiedad.GetFilteredLimitSkip,
   PropiedadRoutes.getFilteredLimitSkip,
 );

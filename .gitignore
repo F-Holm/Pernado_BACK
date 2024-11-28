@@ -47,4 +47,8 @@ testem.log
 Thumbs.db
 
 #Images
-./src/imagenes/
+imagenes/
+
+#.env
+*.env
+!env/test.env
