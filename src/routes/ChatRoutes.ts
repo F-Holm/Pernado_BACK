@@ -62,13 +62,27 @@ async function getOne(req: IReq, res: IRes) {
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
-  const chat = await ChatService.getOne(id);
+  const chat: IChat = await ChatService.getOne(id);
 
   if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && !Chat.isMiembro(chat, id_token)) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
   return res.status(HttpStatusCodes.OK).json({ chat });
+}
+
+/**
+ * Get one user.
+ */
+async function tengoChat(req: IReq, res: IRes) {
+  const duenio: number = +req.params.id;
+
+  const token: string = (req.headers['authorization'] as string).split(' ')[1];
+  const id: number = JSON.parse(atob(token.split('.')[1])).data as number;
+
+  const tengoChat: boolean = await ChatService.tengoChat(duenio, id);
+
+  return res.status(HttpStatusCodes.OK).json({ tengoChat });
 }
 
 
@@ -81,9 +95,7 @@ async function add(req: IReq<{chat: IChat}>, res: IRes) {
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
-  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && !Chat.isMiembro(chat, id_token)) {
-    return res.status(HttpStatusCodes.UNAUTHORIZED);
-  }
+  chat.comprador = id_token;
 
   await ChatService.addOne(chat);
   return res.status(HttpStatusCodes.CREATED).end();
@@ -106,14 +118,15 @@ async function update(req: IReq<{chat: IChat}>, res: IRes) {
 }
 
 async function addMensaje(req: IReq<{id: number, mensaje: IMensaje}>, res: IRes) {
+  const { id, mensaje } = req.body;
+
   const token: string = (req.headers['authorization'] as string).split(' ')[1];
   const id_token: number = JSON.parse(atob(token.split('.')[1])).data as number;
 
-  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && !Chat.isMiembro(await ChatService.getOne(id_token), id_token)) {
+  if (!Usuario.isAdmin(await UsuarioService.getOne(id_token)) && !Chat.isMiembro(await ChatService.getOne(id), id_token)) {
     return res.status(HttpStatusCodes.UNAUTHORIZED);
   }
 
-  const { id, mensaje } = req.body;
   await ChatService.addMensaje(id, mensaje);
   return res.status(HttpStatusCodes.OK).end();
 }
@@ -142,6 +155,7 @@ export default {
   add,
   getMyChats,
   getMyChatsToken,
+  tengoChat,
   addMensaje,
   getOne,
   update,
