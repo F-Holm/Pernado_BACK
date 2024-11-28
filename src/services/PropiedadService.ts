@@ -93,7 +93,7 @@ async function addOne(propiedad: IPropiedad): Promise<void> {
  * Update one user.
  */
 async function updateOne(propiedad: IPropiedad): Promise<void> {
-  const persists = await PropiedadRepo.persists(propiedad.id);
+  const persists: boolean = await PropiedadRepo.persists(propiedad.id);
   if (!persists) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,

@@ -149,6 +149,13 @@ propiedadRouter.get(
   PropiedadRoutes.getUsuario,
 );
 
+// get de todas las propiedades de x usuario.
+propiedadRouter.get(
+  Paths.Propiedad.GetUsuarioToken,
+  verificarToken,
+  PropiedadRoutes.getUsuarioToken,
+);
+
 // Get all users
 propiedadRouter.get(
   Paths.Propiedad.GetLimitSkip,
@@ -165,6 +172,13 @@ propiedadRouter.get(
 propiedadRouter.post(
   Paths.Propiedad.GetFiltered,
   PropiedadRoutes.getFiltered,
+);
+
+// Get all users
+propiedadRouter.post(
+  Paths.Propiedad.PostPreguntar,
+  verificarToken,
+  PropiedadRoutes.postPreguntar,
 );
 
 // Get all users
